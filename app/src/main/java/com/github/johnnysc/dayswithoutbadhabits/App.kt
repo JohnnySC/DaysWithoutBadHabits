@@ -1,7 +1,6 @@
 package com.github.johnnysc.dayswithoutbadhabits
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 
 /**
@@ -13,11 +12,10 @@ class App : Application(), ProvideViewModel {
 
     override fun onCreate() {
         super.onCreate()
+        val sharedPref = if (BuildConfig.DEBUG) SharedPref.Test() else SharedPref.Base()
         viewModel = MainViewModel(
             MainRepository.Base(
-                CacheDataSource.Base(
-                    getSharedPreferences("base", Context.MODE_PRIVATE),
-                ),
+                CacheDataSource.Base(sharedPref.make(this)),
                 Now.Base()
             ),
             MainCommunication.Base(MutableLiveData())
