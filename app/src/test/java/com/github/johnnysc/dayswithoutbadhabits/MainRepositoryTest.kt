@@ -15,7 +15,7 @@ class MainRepositoryTest {
         val repository = MainRepository.Base(cacheDataSource, now)
         now.addTime(1544)
         val actual = repository.days()
-        val expected: Long = 0
+        val expected = 0
         assertEquals(expected, actual)
         assertEquals(1544, cacheDataSource.time(-1))
     }
@@ -30,7 +30,7 @@ class MainRepositoryTest {
 
         val repository = MainRepository.Base(cacheDataSource, now)
         val actual = repository.days()
-        val expected: Long = 7
+        val expected = 7
         assertEquals(expected, actual)
     }
 
