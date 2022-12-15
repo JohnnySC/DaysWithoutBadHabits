@@ -1,5 +1,7 @@
 package com.github.johnnysc.dayswithoutbadhabits
 
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -39,7 +41,7 @@ private class FakeRepository(private val days: Int) : MainRepository {
 
 }
 
-interface FakeMainCommunication : MainCommunication.Put {
+private interface FakeMainCommunication : MainCommunication.Mutable {
 
     fun checkCalledCount(count: Int): Boolean
     fun isSame(uiState: UiState): Boolean
@@ -56,5 +58,7 @@ interface FakeMainCommunication : MainCommunication.Put {
             callCount++
             state = value
         }
+
+        override fun observe(owner: LifecycleOwner, observer: Observer<UiState>) = Unit
     }
 }
