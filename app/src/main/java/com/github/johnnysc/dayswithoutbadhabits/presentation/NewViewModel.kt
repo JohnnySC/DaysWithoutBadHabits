@@ -38,9 +38,10 @@ class NewViewModel(
         communication.put(NewUiState.Replace(position, card.toNonEditable()))
 
     override fun deleteCard(position: Int, id: Long) {
+        val canAddNewCard = interactor.canAddNewCard()
         interactor.deleteCard(id)
         communication.put(NewUiState.Remove(position))
-        if (!interactor.canAddNewCard())
+        if (!canAddNewCard)
             communication.put(NewUiState.Add(Card.Add))
     }
 
