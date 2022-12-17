@@ -17,7 +17,7 @@ class App : Application(), ProvideViewModel {
                 CacheDataSource.Base(SharedPref.Factory(BuildConfig.DEBUG).make(this)),
                 Now.Base()
             ),
-            MainCommunication.Base(MutableLiveData())
+            MainCommunication.Base()
         )
     }
 

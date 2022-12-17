@@ -2,6 +2,7 @@ package com.github.johnnysc.dayswithoutbadhabits
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import com.github.johnnysc.dayswithoutbadhabits.core.Init
 
 /**
  * @author Asatryan on 15.12.2022
@@ -9,9 +10,9 @@ import androidx.lifecycle.Observer
 class MainViewModel(
     private val repository: MainRepository,
     private val communication: MainCommunication.Mutable
-) : MainCommunication.Observe {
+) : MainCommunication.Observe, Init {
 
-    fun init(isFirstRun: Boolean) {
+    override fun init(isFirstRun: Boolean) {
         if (isFirstRun) {
             val days = repository.days()
             val value: UiState = if (days == 0)
@@ -30,7 +31,3 @@ class MainViewModel(
     override fun observe(owner: LifecycleOwner, observer: Observer<UiState>) =
         communication.observe(owner, observer)
 }
-
-
-
-
