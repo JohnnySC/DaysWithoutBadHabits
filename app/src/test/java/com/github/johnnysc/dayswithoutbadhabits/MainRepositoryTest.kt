@@ -6,7 +6,7 @@ import org.junit.Test
 /**
  * @author Asatryan on 15.12.2022
  */
-class MainRepositoryTest {
+class MainRepositoryTest : BaseTest() {
 
     @Test
     fun no_days() {
@@ -42,24 +42,6 @@ class MainRepositoryTest {
         now.addTime(54321)
         repository.reset()
         assertEquals(54321, cacheDataSource.time(-1))
-    }
-}
-
-private interface FakeNow : Now {
-
-    fun addTime(diff: Long)
-
-    class Base : FakeNow {
-
-        private var time = 0L
-
-        override fun time(): Long {
-            return time
-        }
-
-        override fun addTime(diff: Long) {
-            this.time += diff
-        }
     }
 }
 
