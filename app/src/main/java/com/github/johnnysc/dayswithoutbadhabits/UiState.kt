@@ -11,17 +11,13 @@ sealed class UiState {
 
     abstract fun apply(daysTextView: TextView, resetButton: Button)
 
-    object ZeroDays : UiState() {
+    abstract class Abstract(private val text: String, private val visibility: Int) : UiState() {
         override fun apply(daysTextView: TextView, resetButton: Button) {
-            daysTextView.text = "0"
-            resetButton.visibility = View.GONE
+            daysTextView.text = text
+            resetButton.visibility = visibility
         }
     }
 
-    data class NDays(private val days: Int) : UiState() {
-        override fun apply(daysTextView: TextView, resetButton: Button) {
-            daysTextView.text = days.toString()
-            resetButton.visibility = View.VISIBLE
-        }
-    }
+    object ZeroDays : Abstract("0", View.GONE)
+    data class NDays(private val days: Int) : Abstract(days.toString(), View.VISIBLE)
 }
