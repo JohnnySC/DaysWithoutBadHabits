@@ -32,7 +32,7 @@ class RepositoryTest : BaseTest() {
             listOf(
                 CardCache(id = 0L, countStartTime = 0L, text = "x"),
                 CardCache(id = threeDays, countStartTime = threeDays, text = "three"),
-                CardCache(id = sevenDays, countStartTime = threeDays, text = "y")
+                CardCache(id = sevenDays, countStartTime = sevenDays, text = "y")
             )
         )
         val repository = NewRepository(cacheDataSource, now)
@@ -122,7 +122,10 @@ class RepositoryTest : BaseTest() {
         expected = listOf(Card.ZeroDays("x", 0L))
         assertEquals(expected, actual)
 
-        assertEquals(CardCache(id = 0L, countStartTime = sevenDays), cacheDataSource.cards()[0])
+        assertEquals(
+            CardCache(id = 0L, countStartTime = sevenDays, text = "x"),
+            cacheDataSource.cards()[0]
+        )
     }
 }
 
@@ -139,24 +142,24 @@ private class FakeCacheDataSource(list: List<CardCache>) : NewCacheDataSource {
     }
 
     override fun addCard(id: Long, text: String) {
-        val card = CardCache(id = id, text = text)
+        val card = CardCache(id = id, countStartTime = id, text = text)
         cards.add(card)
     }
 
     override fun updateCard(id: Long, text: String) {
-        val card = cards.find { it.id == id }!!
+        val card = cards.find { it.same(id) }!!
         val index = cards.indexOf(card)
         val new = card.updateText(newText = text)
         cards.set(index, new)
     }
 
     override fun deleteCard(id: Long) {
-        val card = cards.find { it.id == id }!!
+        val card = cards.find { it.same(id) }!!
         cards.remove(card)
     }
 
     override fun resetCard(id: Long, countStartTime: Long) {
-        val card = cards.find { it.id == id }!!
+        val card = cards.find { it.same(id) }!!
         val index = cards.indexOf(card)
         val new = card.updateCountStartTime(countStartTime = countStartTime)
         cards.set(index, new)
