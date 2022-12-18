@@ -9,7 +9,8 @@ import com.github.johnnysc.dayswithoutbadhabits.domain.NewMainInteractor
  */
 class NewViewModel(
     private val communication: NewMainCommunication.Mutable,
-    private val interactor: NewMainInteractor
+    private val interactor: NewMainInteractor,
+    private val changeEditable: Card.Mapper<Card> = Card.Mapper.ChangeEditable()
 ) : Init, NewViewModelActions {
 
     override fun init(isFirstRun: Boolean) {
@@ -31,11 +32,12 @@ class NewViewModel(
             communication.put(NewUiState.Add(Card.Add))
     }
 
-    override fun editZeroDaysCard(position: Int, card: Card.ZeroDays) =
-        communication.put(NewUiState.Replace(position, card.toEditable()))
+    override fun editZeroDaysCard(position: Int, card: Card.ZeroDays) {
+        communication.put(NewUiState.Replace(position, card.map(changeEditable)))
+    }
 
     override fun cancelEditZeroDaysCard(position: Int, card: Card.ZeroDaysEdit) =
-        communication.put(NewUiState.Replace(position, card.toNonEditable()))
+        communication.put(NewUiState.Replace(position, card.map(changeEditable)))
 
     override fun deleteCard(position: Int, id: Long) {
         val canAddNewCard = interactor.canAddNewCard()
@@ -51,10 +53,10 @@ class NewViewModel(
     }
 
     override fun editNonZeroDaysCard(position: Int, card: Card.NonZeroDays) =
-        communication.put(NewUiState.Replace(position, card.toEditable()))
+        communication.put(NewUiState.Replace(position, card.map(changeEditable)))
 
     override fun cancelEditNonZeroDaysCard(position: Int, card: Card.NonZeroDaysEdit) =
-        communication.put(NewUiState.Replace(position, card.toNonEditable()))
+        communication.put(NewUiState.Replace(position, card.map(changeEditable)))
 
     override fun saveEditedNonZeroDaysCard(days: Int, text: String, position: Int, id: Long) {
         interactor.updateCard(id, text)
@@ -62,8 +64,8 @@ class NewViewModel(
     }
 
     override fun resetNonZeroDaysCard(position: Int, card: Card.NonZeroDaysEdit) {
-        card.reset(interactor)
-        communication.put(NewUiState.Replace(position, card.toZeroDays()))
+        card.map(Card.Mapper.Reset(interactor))
+        communication.put(NewUiState.Replace(position, card.map(Card.Mapper.ResetDays())))
     }
 }
 

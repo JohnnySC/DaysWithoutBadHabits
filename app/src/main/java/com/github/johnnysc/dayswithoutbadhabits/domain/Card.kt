@@ -1,39 +1,90 @@
 package com.github.johnnysc.dayswithoutbadhabits.domain
 
 /**
- * todo refactor
  * @author Asatryan on 17.12.2022
  */
-sealed class Card {
+sealed class Card(
+    private val id: Long,
+    private val text: String,
+    private val days: Int,
+    private val editable: Boolean
+) {
 
-    object Add : Card()
-    object Make : Card()
+    fun <T> map(mapper: Mapper<T>): T = mapper.map(id, text, days, editable)
 
-    data class ZeroDays(private val text: String, private val id: Long) : Card() {
+    interface Mapper<T> {
+        fun map(id: Long, text: String, days: Int, editable: Boolean): T
 
-        fun toEditable() = ZeroDaysEdit(text, id)
+        class ResetDays : Mapper<Card> {
+            override fun map(id: Long, text: String, days: Int, editable: Boolean) =
+                ZeroDays(text, id)
+        }
+
+        class Same(private val id: Long) : Mapper<Boolean> {
+            override fun map(id: Long, text: String, days: Int, editable: Boolean) =
+                id == this.id
+        }
+
+        class Duplicate(private val newText: String) : Mapper<Card> {
+            override fun map(id: Long, text: String, days: Int, editable: Boolean): Card {
+                return if (days > 0) {
+                    if (editable)
+                        NonZeroDaysEdit(days, newText, id)
+                    else
+                        NonZeroDays(days, newText, id)
+
+                } else if (days == 0) {
+                    if (editable)
+                        ZeroDaysEdit(newText, id)
+                    else
+                        ZeroDays(newText, id)
+                } else {
+                    if (id == 0L)
+                        Add
+                    else
+                        Make
+                }
+            }
+        }
+
+        class ChangeEditable : Mapper<Card> {
+            override fun map(id: Long, text: String, days: Int, editable: Boolean): Card {
+                return if (days > 0) {
+                    if (editable)
+                        NonZeroDays(days, text, id)
+                    else
+                        NonZeroDaysEdit(days, text, id)
+                } else if (days == 0) {
+                    if (editable)
+                        ZeroDays(text, id)
+                    else
+                        ZeroDaysEdit(text, id)
+                } else {
+                    if (id == 0L)
+                        Add
+                    else
+                        Make
+                }
+            }
+        }
+
+        class Reset(private val resetCard: ResetCard) : Mapper<Unit> {
+            override fun map(id: Long, text: String, days: Int, editable: Boolean) =
+                resetCard.resetCard(id)
+        }
     }
 
-    data class ZeroDaysEdit(private val text: String, private val id: Long) : Card() {
-        fun toNonEditable() = ZeroDays(text, id)
-    }
+    object Add : Card(0L, "", -1, false)
 
-    data class NonZeroDays(private val days: Int, private val text: String, private val id: Long) :
-        Card() {
+    object Make : Card(1L, "", -1, false)
 
-        fun toEditable() = NonZeroDaysEdit(days, text, id)
-    }
+    data class ZeroDays(val text: String, val id: Long) : Card(id, text, 0, false)
 
-    data class NonZeroDaysEdit(
-        private val days: Int,
-        private val text: String,
-        private val id: Long
-    ) : Card() {
+    data class ZeroDaysEdit(val text: String, val id: Long) : Card(id, text, 0, true)
 
-        fun reset(newMainInteractor: NewMainInteractor) = newMainInteractor.resetCard(id)
+    data class NonZeroDays(val days: Int, val text: String, val id: Long) :
+        Card(id, text, days, false)
 
-        fun toNonEditable() = NonZeroDays(days, text, id)
-
-        fun toZeroDays() = ZeroDays(text, id)
-    }
+    data class NonZeroDaysEdit(val days: Int, val text: String, val id: Long) :
+        Card(id, text, days, true)
 }
