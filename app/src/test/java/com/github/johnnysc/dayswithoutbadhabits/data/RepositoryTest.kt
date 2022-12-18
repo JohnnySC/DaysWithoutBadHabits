@@ -124,44 +124,24 @@ class RepositoryTest : BaseTest() {
 
         assertEquals(
             CardCache(id = 0L, countStartTime = sevenDays, text = "x"),
-            cacheDataSource.cards()[0]
+            cacheDataSource.read()[0]
         )
     }
 }
 
 private class FakeCacheDataSource(list: List<CardCache>) : NewCacheDataSource {
 
-    private val cards = ArrayList<CardCache>()
+    private var cards: MutableList<CardCache> = ArrayList()
 
     init {
         cards.addAll(list)
     }
 
-    override fun cards(): List<CardCache> {
+    override fun read(): MutableList<CardCache> {
         return cards
     }
 
-    override fun addCard(id: Long, text: String) {
-        val card = CardCache(id = id, countStartTime = id, text = text)
-        cards.add(card)
-    }
-
-    override fun updateCard(id: Long, text: String) {
-        val card = cards.find { it.same(id) }!!
-        val index = cards.indexOf(card)
-        val new = card.updateText(newText = text)
-        cards.set(index, new)
-    }
-
-    override fun deleteCard(id: Long) {
-        val card = cards.find { it.same(id) }!!
-        cards.remove(card)
-    }
-
-    override fun resetCard(id: Long, countStartTime: Long) {
-        val card = cards.find { it.same(id) }!!
-        val index = cards.indexOf(card)
-        val new = card.updateCountStartTime(countStartTime = countStartTime)
-        cards.set(index, new)
+    override fun save(list: MutableList<CardCache>) {
+        cards = list
     }
 }

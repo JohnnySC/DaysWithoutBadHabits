@@ -14,19 +14,40 @@ class NewRepository(
 ) : Repository {
 
     override fun cards(): List<Card> {
-        val cacheList = cacheDataSource.cards()
+        val cacheList = cacheDataSource.read()
         return cacheList.map { it.map(mapper) }
     }
 
     override fun newCard(text: String): Card {
         val id = now.time()
-        cacheDataSource.addCard(id, text)
+        val list = cacheDataSource.read()
+        list.add(CardCache(id, id, text))
+        cacheDataSource.save(list)
         return Card.ZeroDays(text, id)
     }
 
-    override fun updateCard(id: Long, newText: String) = cacheDataSource.updateCard(id, newText)
+    override fun updateCard(id: Long, newText: String) {
+        val mutableList = cacheDataSource.read()
+        val card = mutableList.find { it.same(id) }!!
+        val index = mutableList.indexOf(card)
+        val newCard = card.updateText(newText)
+        mutableList[index] = newCard
+        cacheDataSource.save(mutableList)
+    }
 
-    override fun deleteCard(id: Long) = cacheDataSource.deleteCard(id)
+    override fun deleteCard(id: Long) {
+        val cachedCards = cacheDataSource.read()
+        val card = cachedCards.find { it.same(id) }!!
+        cachedCards.remove(card)
+        cacheDataSource.save(cachedCards)
+    }
 
-    override fun resetCard(id: Long) = cacheDataSource.resetCard(id, now.time())
+    override fun resetCard(id: Long) {
+        val mutableList = cacheDataSource.read()
+        val card = mutableList.find { it.same(id) }!!
+        val index = mutableList.indexOf(card)
+        val newCard = card.updateCountStartTime(now.time())
+        mutableList[index] = newCard
+        cacheDataSource.save(mutableList)
+    }
 }
