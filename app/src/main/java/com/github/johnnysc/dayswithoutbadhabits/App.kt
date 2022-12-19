@@ -1,7 +1,12 @@
 package com.github.johnnysc.dayswithoutbadhabits
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
+import com.github.johnnysc.dayswithoutbadhabits.data.NewCacheDataSource
+import com.github.johnnysc.dayswithoutbadhabits.data.NewRepository
+import com.github.johnnysc.dayswithoutbadhabits.domain.NewMainInteractor
+import com.github.johnnysc.dayswithoutbadhabits.presentation.MainCommunication
+import com.github.johnnysc.dayswithoutbadhabits.presentation.MainViewModel
+import com.google.gson.Gson
 
 /**
  * @author Asatryan on 15.12.2022
@@ -13,11 +18,17 @@ class App : Application(), ProvideViewModel {
     override fun onCreate() {
         super.onCreate()
         viewModel = MainViewModel(
-            MainRepository.Base(
-                CacheDataSource.Base(SharedPref.Factory(BuildConfig.DEBUG).make(this)),
-                Now.Base()
+            MainCommunication.Base(),
+            NewMainInteractor.Base(
+                NewRepository(
+                    NewCacheDataSource.Base(
+                        SharedPref.Factory(BuildConfig.DEBUG).make(this),
+                        Gson()
+                    ),
+                    Now.Base(),
+                ),
+                3
             ),
-            MainCommunication.Base()
         )
     }
 

@@ -10,17 +10,17 @@ import org.junit.Test
 /**
  * @author Asatryan on 17.12.2022
  */
-class NewViewModelTest {
+class MainViewModelTest {
 
     //region add and make
     @Test
     fun `first start`() {
         val communication = FakeCommunication()
         val interactor = FakeInteractor(listOf(Card.Add))
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
-        assertEquals(NewUiState.AddAll(listOf(Card.Add)), communication.list[0])
+        assertEquals(MainUiState.AddAll(listOf(Card.Add)), communication.list[0])
         assertEquals(1, communication.list.size)
 
         viewModel.init(isFirstRun = false)
@@ -31,14 +31,14 @@ class NewViewModelTest {
     fun `add first card`() {
         val communication = FakeCommunication()
         val interactor = FakeInteractor(listOf(Card.Add))
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
-        assertEquals(NewUiState.AddAll(listOf(Card.Add)), communication.list[0])
+        assertEquals(MainUiState.AddAll(listOf(Card.Add)), communication.list[0])
         assertEquals(1, communication.list.size)
 
         viewModel.addCard(position = 0)
-        assertEquals(NewUiState.Replace(position = 0, card = Card.Make), communication.list[1])
+        assertEquals(MainUiState.Replace(position = 0, card = Card.Make), communication.list[1])
         assertEquals(2, communication.list.size)
     }
 
@@ -46,18 +46,18 @@ class NewViewModelTest {
     fun `cancel make card`() {
         val communication = FakeCommunication()
         val interactor = FakeInteractor(listOf(Card.Add))
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
-        assertEquals(NewUiState.AddAll(listOf(Card.Add)), communication.list[0])
+        assertEquals(MainUiState.AddAll(listOf(Card.Add)), communication.list[0])
         assertEquals(1, communication.list.size)
 
         viewModel.addCard(position = 0)
-        assertEquals(NewUiState.Replace(position = 0, card = Card.Make), communication.list[1])
+        assertEquals(MainUiState.Replace(position = 0, card = Card.Make), communication.list[1])
         assertEquals(2, communication.list.size)
 
         viewModel.cancelMakeCard(position = 0)
-        assertEquals(NewUiState.Replace(position = 0, card = Card.Add), communication.list[2])
+        assertEquals(MainUiState.Replace(position = 0, card = Card.Add), communication.list[2])
         assertEquals(3, communication.list.size)
     }
 
@@ -65,14 +65,14 @@ class NewViewModelTest {
     fun `save first card`() {
         val communication = FakeCommunication()
         val interactor = FakeInteractor(listOf(Card.Add))
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
-        assertEquals(NewUiState.AddAll(listOf(Card.Add)), communication.list[0])
+        assertEquals(MainUiState.AddAll(listOf(Card.Add)), communication.list[0])
         assertEquals(1, communication.list.size)
 
         viewModel.addCard(position = 0)
-        assertEquals(NewUiState.Replace(position = 0, card = Card.Make), communication.list[1])
+        assertEquals(MainUiState.Replace(position = 0, card = Card.Make), communication.list[1])
         assertEquals(2, communication.list.size)
 
         interactor.canAddNewCard = true
@@ -82,13 +82,13 @@ class NewViewModelTest {
         assertEquals(1, interactor.canAddNewCardList.size)
         assertEquals(true, interactor.canAddNewCardList[0])
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 0,
                 card = Card.ZeroDays(text = "days without smoking", id = 4L)
             ),
             communication.list[2]
         )
-        assertEquals(NewUiState.Add(Card.Add), communication.list[3])
+        assertEquals(MainUiState.Add(Card.Add), communication.list[3])
         assertEquals(4, communication.list.size)
     }
 
@@ -96,14 +96,14 @@ class NewViewModelTest {
     fun `save only one card`() {
         val communication = FakeCommunication()
         val interactor = FakeInteractor(listOf(Card.Add))
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
-        assertEquals(NewUiState.AddAll(listOf(Card.Add)), communication.list[0])
+        assertEquals(MainUiState.AddAll(listOf(Card.Add)), communication.list[0])
         assertEquals(1, communication.list.size)
 
         viewModel.addCard(position = 0)
-        assertEquals(NewUiState.Replace(position = 0, card = Card.Make), communication.list[1])
+        assertEquals(MainUiState.Replace(position = 0, card = Card.Make), communication.list[1])
         assertEquals(2, communication.list.size)
 
         interactor.canAddNewCard = false
@@ -113,7 +113,7 @@ class NewViewModelTest {
         assertEquals(1, interactor.canAddNewCardList.size)
         assertEquals(false, interactor.canAddNewCardList[0])
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 0,
                 card = Card.ZeroDays(text = "days without smoking", id = 4L)
             ),
@@ -129,11 +129,11 @@ class NewViewModelTest {
         val communication = FakeCommunication()
         val interactor =
             FakeInteractor(listOf(Card.ZeroDays(text = "days without smoking", id = 1L), Card.Add))
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
         assertEquals(
-            NewUiState.AddAll(
+            MainUiState.AddAll(
                 listOf(
                     Card.ZeroDays(text = "days without smoking", id = 1L),
                     Card.Add
@@ -148,7 +148,7 @@ class NewViewModelTest {
             card = Card.ZeroDays(text = "days without smoking", id = 1L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 0,
                 card = Card.ZeroDaysEdit(text = "days without smoking", id = 1L)
             ),
@@ -161,7 +161,7 @@ class NewViewModelTest {
             card = Card.ZeroDaysEdit(text = "days without smoking", id = 1L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 0,
                 card = Card.ZeroDays(text = "days without smoking", id = 1L)
             ),
@@ -175,11 +175,11 @@ class NewViewModelTest {
         val communication = FakeCommunication()
         val interactor =
             FakeInteractor(listOf(Card.ZeroDays(text = "days without smoking", id = 1L), Card.Add))
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
         assertEquals(
-            NewUiState.AddAll(
+            MainUiState.AddAll(
                 listOf(
                     Card.ZeroDays(text = "days without smoking", id = 1L),
                     Card.Add
@@ -194,7 +194,7 @@ class NewViewModelTest {
             card = Card.ZeroDays(text = "days without smoking", id = 1L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 0,
                 card = Card.ZeroDaysEdit(text = "days without smoking", id = 1L)
             ),
@@ -208,7 +208,7 @@ class NewViewModelTest {
         assertEquals(true, interactor.canAddNewCardList[0])
         assertEquals(1, interactor.deleteCardList.size)
         assertEquals(1L, interactor.deleteCardList[0])
-        assertEquals(NewUiState.Remove(position = 0), communication.list[2])
+        assertEquals(MainUiState.Remove(position = 0), communication.list[2])
         assertEquals(3, communication.list.size)
     }
 
@@ -222,11 +222,11 @@ class NewViewModelTest {
                     Card.ZeroDays(text = "days without alcohol", id = 2L),
                 )
             )
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
         viewModel.init(isFirstRun = true)
 
         assertEquals(
-            NewUiState.AddAll(
+            MainUiState.AddAll(
                 listOf(
                     Card.ZeroDays(text = "days without smoking", id = 1L),
                     Card.ZeroDays(text = "days without alcohol", id = 2L),
@@ -241,7 +241,7 @@ class NewViewModelTest {
             card = Card.ZeroDays(text = "days without alcohol", id = 2L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 1,
                 card = Card.ZeroDaysEdit(text = "days without alcohol", id = 2L)
             ),
@@ -255,8 +255,8 @@ class NewViewModelTest {
         assertEquals(false, interactor.canAddNewCardList[0])
         assertEquals(1, interactor.deleteCardList.size)
         assertEquals(2L, interactor.deleteCardList[0])
-        assertEquals(NewUiState.Remove(position = 1), communication.list[2])
-        assertEquals(NewUiState.Add(Card.Add), communication.list[3])
+        assertEquals(MainUiState.Remove(position = 1), communication.list[2])
+        assertEquals(MainUiState.Add(Card.Add), communication.list[3])
         assertEquals(4, communication.list.size)
     }
 
@@ -270,11 +270,11 @@ class NewViewModelTest {
                     Card.ZeroDays(text = "days without alcohol", id = 2L),
                 )
             )
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
         assertEquals(
-            NewUiState.AddAll(
+            MainUiState.AddAll(
                 listOf(
                     Card.ZeroDays(text = "days without smoking", id = 1L),
                     Card.ZeroDays(text = "days without alcohol", id = 2L),
@@ -289,7 +289,7 @@ class NewViewModelTest {
             card = Card.ZeroDays(text = "days without alcohol", id = 2L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 1,
                 card = Card.ZeroDaysEdit(text = "days without alcohol", id = 2L)
             ),
@@ -301,7 +301,7 @@ class NewViewModelTest {
         assertEquals(1, interactor.updateCardList.size)
         assertEquals(2L, interactor.updateCardList[0])
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 1,
                 card = Card.ZeroDays(text = "days without vodka", id = 2L)
             ),
@@ -325,11 +325,11 @@ class NewViewModelTest {
                     ), Card.Add
                 )
             )
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
         assertEquals(
-            NewUiState.AddAll(
+            MainUiState.AddAll(
                 listOf(
                     Card.NonZeroDays(days = 12, text = "days without smoking", id = 1L),
                     Card.Add
@@ -344,7 +344,7 @@ class NewViewModelTest {
             card = Card.NonZeroDays(days = 12, text = "days without smoking", id = 1L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 0,
                 card = Card.NonZeroDaysEdit(days = 12, text = "days without smoking", id = 1L)
             ),
@@ -357,7 +357,7 @@ class NewViewModelTest {
             card = Card.NonZeroDaysEdit(days = 12, text = "days without smoking", id = 1L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 0,
                 card = Card.NonZeroDays(days = 12, text = "days without smoking", id = 1L)
             ),
@@ -380,11 +380,11 @@ class NewViewModelTest {
                     Card.Add
                 )
             )
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
         assertEquals(
-            NewUiState.AddAll(
+            MainUiState.AddAll(
                 listOf(
                     Card.NonZeroDays(days = 12, text = "days without smoking", id = 1L),
                     Card.Add
@@ -399,7 +399,7 @@ class NewViewModelTest {
             card = Card.NonZeroDays(days = 12, text = "days without smoking", id = 1L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 0,
                 card = Card.NonZeroDaysEdit(days = 12, text = "days without smoking", id = 1L)
             ),
@@ -413,7 +413,7 @@ class NewViewModelTest {
         assertEquals(true, interactor.canAddNewCardList[0])
         assertEquals(1, interactor.deleteCardList.size)
         assertEquals(1L, interactor.deleteCardList[0])
-        assertEquals(NewUiState.Remove(position = 0), communication.list[2])
+        assertEquals(MainUiState.Remove(position = 0), communication.list[2])
         assertEquals(3, communication.list.size)
     }
 
@@ -427,11 +427,11 @@ class NewViewModelTest {
                     Card.NonZeroDays(days = 12, text = "days without alcohol", id = 2L),
                 )
             )
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
         viewModel.init(isFirstRun = true)
 
         assertEquals(
-            NewUiState.AddAll(
+            MainUiState.AddAll(
                 listOf(
                     Card.NonZeroDays(days = 12, text = "days without smoking", id = 1L),
                     Card.NonZeroDays(days = 12, text = "days without alcohol", id = 2L),
@@ -446,7 +446,7 @@ class NewViewModelTest {
             card = Card.NonZeroDays(days = 12, text = "days without alcohol", id = 2L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 1,
                 card = Card.NonZeroDaysEdit(days = 12, text = "days without alcohol", id = 2L)
             ),
@@ -460,8 +460,8 @@ class NewViewModelTest {
         assertEquals(false, interactor.canAddNewCardList[0])
         assertEquals(1, interactor.deleteCardList.size)
         assertEquals(2L, interactor.deleteCardList[0])
-        assertEquals(NewUiState.Remove(position = 1), communication.list[2])
-        assertEquals(NewUiState.Add(Card.Add), communication.list[3])
+        assertEquals(MainUiState.Remove(position = 1), communication.list[2])
+        assertEquals(MainUiState.Add(Card.Add), communication.list[3])
         assertEquals(4, communication.list.size)
     }
 
@@ -475,11 +475,11 @@ class NewViewModelTest {
                     Card.NonZeroDays(days = 12, text = "days without alcohol", id = 2L),
                 )
             )
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
         assertEquals(
-            NewUiState.AddAll(
+            MainUiState.AddAll(
                 listOf(
                     Card.NonZeroDays(days = 12, text = "days without smoking", id = 1L),
                     Card.NonZeroDays(days = 12, text = "days without alcohol", id = 2L),
@@ -494,7 +494,7 @@ class NewViewModelTest {
             card = Card.NonZeroDays(days = 12, text = "days without alcohol", id = 2L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 1,
                 card = Card.NonZeroDaysEdit(days = 12, text = "days without alcohol", id = 2L)
             ),
@@ -511,7 +511,7 @@ class NewViewModelTest {
         assertEquals(1, interactor.updateCardList.size)
         assertEquals(2L, interactor.updateCardList[0])
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 1,
                 card = Card.NonZeroDays(days = 12, text = "days without vodka", id = 2L)
             ),
@@ -530,11 +530,11 @@ class NewViewModelTest {
                     Card.NonZeroDays(days = 12, text = "days without alcohol", id = 2L),
                 )
             )
-        val viewModel = NewViewModel(communication, interactor)
+        val viewModel = MainViewModel(communication, interactor)
 
         viewModel.init(isFirstRun = true)
         assertEquals(
-            NewUiState.AddAll(
+            MainUiState.AddAll(
                 listOf(
                     Card.NonZeroDays(days = 12, text = "days without smoking", id = 1L),
                     Card.NonZeroDays(days = 12, text = "days without alcohol", id = 2L),
@@ -549,7 +549,7 @@ class NewViewModelTest {
             card = Card.NonZeroDays(days = 12, text = "days without alcohol", id = 2L)
         )
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 1,
                 card = Card.NonZeroDaysEdit(days = 12, text = "days without alcohol", id = 2L)
             ),
@@ -564,7 +564,7 @@ class NewViewModelTest {
         assertEquals(2L, interactor.resetCardList[0])
         assertEquals(1, interactor.resetCardList.size)
         assertEquals(
-            NewUiState.Replace(
+            MainUiState.Replace(
                 position = 1,
                 card = Card.ZeroDays(text = "days without alcohol", id = 2L)
             ), communication.list[2]
@@ -610,13 +610,13 @@ private class FakeInteractor(private val cards: List<Card>) : NewMainInteractor 
     }
 }
 
-private class FakeCommunication : NewMainCommunication.Mutable {
+private class FakeCommunication : MainCommunication.Mutable {
 
-    val list = mutableListOf<NewUiState>()
+    val list = mutableListOf<MainUiState>()
 
-    override fun put(value: NewUiState) {
+    override fun put(value: MainUiState) {
         list.add(value)
     }
 
-    override fun observe(owner: LifecycleOwner, observer: Observer<NewUiState>) = Unit
+    override fun observe(owner: LifecycleOwner, observer: Observer<MainUiState>) = Unit
 }

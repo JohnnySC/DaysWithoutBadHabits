@@ -4,6 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_new_main.xml" value="0.28229166666666666" />
+        <entry key="app/src/main/res/layout/add_button_view.xml" value="0.28125" />
+        <entry key="app/src/main/res/layout/make_card_view.xml" value="0.28125" />
+        <entry key="app/src/main/res/layout/non_zero_days_card_view.xml" value="0.28125" />
+        <entry key="app/src/main/res/layout/non_zero_days_edit_card_view.xml" value="0.28229166666666666" />
+        <entry key="app/src/main/res/layout/zero_days_card_view.xml" value="0.28125" />
+        <entry key="app/src/main/res/layout/zero_days_edit_card_view.xml" value="0.28125" />
       </map>
     </option>
   </component>

@@ -2,4 +2,14 @@
     <string name="app_name">DaysWithoutBadHabits</string>
     <string name="subtitle">day(s) with no bad habits</string>
     <string name="reset">reset</string>
+    <string name="add_card">add card</string>
+    <string name="save">save</string>
+    <string name="cancel">cancel</string>
+    <string name="edit">edit</string>
+    <string name="zero">0</string>
+    <string name="hint">days without alcohol</string>
+    <string name="delete_card">delete card</string>
+    <string name="confirm_delete_card">confirm delete card</string>
+    <string name="reset_card">reset days</string>
+    <string name="confirm_reset_days">confirm reset days</string>
 </resources>
