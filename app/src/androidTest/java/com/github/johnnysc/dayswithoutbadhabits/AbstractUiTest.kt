@@ -5,10 +5,13 @@ import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.johnnysc.dayswithoutbadhabits.data.SharedPref
 import com.github.johnnysc.dayswithoutbadhabits.presentation.MainActivity
 import org.hamcrest.CoreMatchers.not
 import org.junit.Before
@@ -34,8 +37,13 @@ abstract class AbstractUiTest {
 
     protected abstract fun init(sharedPref: SharedPreferences)
 
-    protected fun ViewInteraction.check(text:String) = check(matches(withText(text)))
+    protected fun ViewInteraction.check(text: String) = check(matches(withText(text)))
     protected fun ViewInteraction.click() = perform(ViewActions.click())
     protected fun ViewInteraction.checkDisplayed() = check(matches(ViewMatchers.isDisplayed()))
-    protected fun ViewInteraction.checkNotDisplayed() = check(matches(not(ViewMatchers.isDisplayed())))
+    protected fun ViewInteraction.checkNotDisplayed() =
+        check(matches(not(ViewMatchers.isDisplayed())))
+
+    protected fun ViewInteraction.checkDoesNotExist() = check(doesNotExist())
+    protected fun ViewInteraction.type(text: String) =
+        perform(replaceText(text), closeSoftKeyboard())
 }
