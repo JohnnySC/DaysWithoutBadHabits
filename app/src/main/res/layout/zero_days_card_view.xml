@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margin"
+    android:id="@+id/zeroDaysCardView"
     app:cardBackgroundColor="@color/teal_200"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
@@ -14,6 +15,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/daysTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

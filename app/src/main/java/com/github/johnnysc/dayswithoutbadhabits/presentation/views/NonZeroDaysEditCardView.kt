@@ -45,7 +45,9 @@ class NonZeroDaysEditCardView : AbstractCardView {
 
         deleteButton.setOnClickListener {
             if (deletePressed)
-                actions.deleteCard(positionCallback.position(this), id)
+                closeAnimation {
+                    actions.deleteCard(positionCallback.position(this), id)
+                }
             else {
                 saveButton.visibility = View.GONE
                 resetButton.visibility = View.GONE
@@ -56,7 +58,9 @@ class NonZeroDaysEditCardView : AbstractCardView {
 
         resetButton.setOnClickListener {
             if (resetPressed)
-                actions.resetNonZeroDaysCard(positionCallback.position(this), card)
+                hideAnimation {
+                    actions.resetNonZeroDaysCard(positionCallback.position(this), card)
+                }
             else {
                 resetPressed = true
                 resetButton.setText(R.string.confirm_reset_days)
@@ -66,9 +70,11 @@ class NonZeroDaysEditCardView : AbstractCardView {
         }
 
         saveButton.setOnClickListener {
-            actions.saveEditedNonZeroDaysCard(
-                days, input.text.toString(), positionCallback.position(this), id
-            )
+            hideAnimation {
+                actions.saveEditedNonZeroDaysCard(
+                    days, input.text.toString(), positionCallback.position(this), id
+                )
+            }
         }
 
         cancelButton.setOnClickListener {
@@ -83,7 +89,10 @@ class NonZeroDaysEditCardView : AbstractCardView {
                 saveButton.visibility = View.VISIBLE
                 deleteButton.visibility = View.VISIBLE
             } else
-                actions.cancelEditNonZeroDaysCard(positionCallback.position(this), card)
+                hideAnimation {
+                    actions.cancelEditNonZeroDaysCard(positionCallback.position(this), card)
+                }
         }
+        animateStart()
     }
 }

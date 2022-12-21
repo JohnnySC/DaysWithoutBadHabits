@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margin"
+    android:id="@+id/addCardView"
     app:cardBackgroundColor="@color/teal_700"
     app:cardCornerRadius="@dimen/card_corner_radius">
 

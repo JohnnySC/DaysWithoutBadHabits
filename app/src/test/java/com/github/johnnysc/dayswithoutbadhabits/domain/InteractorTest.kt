@@ -11,7 +11,7 @@ class InteractorTest {
     @Test
     fun `test initial less max count`() {
         val repository = FakeRepository(listOf(Card.ZeroDays("a", 1L)))
-        val interactor = NewMainInteractor.Base(repository, maxItemsCount = 2)
+        val interactor = MainInteractor.Base(repository, maxItemsCount = 2)
 
         val actual = interactor.cards()
         val expected = listOf(Card.ZeroDays("a", 1L), Card.Add)
@@ -21,7 +21,7 @@ class InteractorTest {
     @Test
     fun `test initial equals max count`() {
         val repository = FakeRepository(listOf(Card.ZeroDays("a", 1L), Card.ZeroDays("b", 2L)))
-        val interactor = NewMainInteractor.Base(repository, maxItemsCount = 2)
+        val interactor = MainInteractor.Base(repository, maxItemsCount = 2)
 
         val actual = interactor.cards()
         val expected = listOf(Card.ZeroDays("a", 1L), Card.ZeroDays("b", 2L))
@@ -31,7 +31,7 @@ class InteractorTest {
     @Test
     fun `test can add new card`() {
         val repository = FakeRepository(listOf(Card.ZeroDays("a", 1L)))
-        val interactor = NewMainInteractor.Base(repository, maxItemsCount = 2)
+        val interactor = MainInteractor.Base(repository, maxItemsCount = 2)
 
         val actual = interactor.canAddNewCard()
         val expected = true
@@ -41,7 +41,7 @@ class InteractorTest {
     @Test
     fun `test cannot add new card`() {
         val repository = FakeRepository(listOf(Card.ZeroDays("a", 1L), Card.ZeroDays("b", 2L)))
-        val interactor = NewMainInteractor.Base(repository, maxItemsCount = 2)
+        val interactor = MainInteractor.Base(repository, maxItemsCount = 2)
 
         val actual = interactor.canAddNewCard()
         val expected = false
@@ -51,7 +51,7 @@ class InteractorTest {
     @Test
     fun `test new card`() {
         val repository = FakeRepository(listOf(Card.ZeroDays("a", 1L)))
-        val interactor = NewMainInteractor.Base(repository, maxItemsCount = 2)
+        val interactor = MainInteractor.Base(repository, maxItemsCount = 2)
 
         val actual = interactor.newCard("xyz")
         val expected = Card.ZeroDays("xyz", 7L)
@@ -65,7 +65,7 @@ class InteractorTest {
     @Test
     fun `test delete card`() {
         val repository = FakeRepository(listOf(Card.ZeroDays("a", 1L), Card.ZeroDays("b", 2L)))
-        val interactor = NewMainInteractor.Base(repository, maxItemsCount = 2)
+        val interactor = MainInteractor.Base(repository, maxItemsCount = 2)
 
         interactor.deleteCard(2L)
 
@@ -77,7 +77,7 @@ class InteractorTest {
     @Test
     fun `test update card`() {
         val repository = FakeRepository(listOf(Card.ZeroDays("a", 1L), Card.ZeroDays("b", 2L)))
-        val interactor = NewMainInteractor.Base(repository, maxItemsCount = 2)
+        val interactor = MainInteractor.Base(repository, maxItemsCount = 2)
 
         interactor.updateCard(1L, "c")
 
@@ -94,7 +94,7 @@ class InteractorTest {
                 Card.NonZeroDays(13, "b", 2L)
             )
         )
-        val interactor = NewMainInteractor.Base(repository, maxItemsCount = 2)
+        val interactor = MainInteractor.Base(repository, maxItemsCount = 2)
 
         interactor.resetCard(1L)
 

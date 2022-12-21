@@ -1,4 +1,4 @@
-package com.github.johnnysc.dayswithoutbadhabits
+package com.github.johnnysc.dayswithoutbadhabits.data
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -18,10 +18,4 @@ interface SharedPref {
 
     class Base : Abstract("release")
     class Test : Abstract("uiTest")
-
-    class Factory(private val useTest: Boolean) : SharedPref {
-
-        override fun make(context: Context): SharedPreferences =
-            (if (useTest) Test() else Base()).make(context)
-    }
 }

@@ -6,14 +6,14 @@ import com.google.gson.Gson
 /**
  * @author Asatryan on 18.12.2022
  */
-interface NewCacheDataSource {
+interface CacheDataSource {
     fun read(): MutableList<CardCache>
     fun save(list: MutableList<CardCache>)
 
     class Base(
         private val sharedPreferences: SharedPreferences,
         private val gson: Gson
-    ) : NewCacheDataSource {
+    ) : CacheDataSource {
 
         override fun read(): MutableList<CardCache> {
             val empty = CacheListWrapper()

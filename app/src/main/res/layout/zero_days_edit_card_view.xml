@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margin"
+    android:id="@+id/zeroDaysEditCardView"
     app:cardBackgroundColor="@color/teal_200"
     app:cardCornerRadius="@dimen/card_corner_radius">
 

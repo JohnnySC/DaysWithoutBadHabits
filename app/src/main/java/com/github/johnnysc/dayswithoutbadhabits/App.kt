@@ -1,9 +1,11 @@
 package com.github.johnnysc.dayswithoutbadhabits
 
 import android.app.Application
-import com.github.johnnysc.dayswithoutbadhabits.data.NewCacheDataSource
-import com.github.johnnysc.dayswithoutbadhabits.data.NewRepository
-import com.github.johnnysc.dayswithoutbadhabits.domain.NewMainInteractor
+import com.github.johnnysc.dayswithoutbadhabits.core.ProvideInstance
+import com.github.johnnysc.dayswithoutbadhabits.data.BaseRepository
+import com.github.johnnysc.dayswithoutbadhabits.data.CacheDataSource
+import com.github.johnnysc.dayswithoutbadhabits.data.Now
+import com.github.johnnysc.dayswithoutbadhabits.domain.MainInteractor
 import com.github.johnnysc.dayswithoutbadhabits.presentation.MainCommunication
 import com.github.johnnysc.dayswithoutbadhabits.presentation.MainViewModel
 import com.google.gson.Gson
@@ -17,18 +19,20 @@ class App : Application(), ProvideViewModel {
 
     override fun onCreate() {
         super.onCreate()
+        val provideInstance = ProvideInstance.Base(BuildConfig.DEBUG)
         viewModel = MainViewModel(
             MainCommunication.Base(),
-            NewMainInteractor.Base(
-                NewRepository(
-                    NewCacheDataSource.Base(
-                        SharedPref.Factory(BuildConfig.DEBUG).make(this),
+            MainInteractor.Base(
+                BaseRepository(
+                    CacheDataSource.Base(
+                        provideInstance.sharedPref().make(this),
                         Gson()
                     ),
                     Now.Base(),
                 ),
-                3
+                provideInstance.maxCount()
             ),
+            animationEnabled = provideInstance.animationEnabled()
         )
     }
 

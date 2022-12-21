@@ -24,7 +24,10 @@ class ZeroDaysCardView : AbstractCardView {
         inflate(context, R.layout.zero_days_card_view, this)
         findViewById<TextView>(R.id.titleTextView).text = text
         findViewById<View>(R.id.editButton).setOnClickListener {
-            actions.editZeroDaysCard(positionCallback.position(this), card)
+            hideAnimation {
+                actions.editZeroDaysCard(positionCallback.position(this), card)
+            }
         }
+        animateStart()
     }
 }

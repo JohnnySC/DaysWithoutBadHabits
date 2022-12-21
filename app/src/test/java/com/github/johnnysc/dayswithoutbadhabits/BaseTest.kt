@@ -1,5 +1,7 @@
 package com.github.johnnysc.dayswithoutbadhabits
 
+import com.github.johnnysc.dayswithoutbadhabits.data.Now
+
 /**
  * @author Asatryan on 18.12.2022
  */

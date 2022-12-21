@@ -1,4 +1,4 @@
-package com.github.johnnysc.dayswithoutbadhabits
+package com.github.johnnysc.dayswithoutbadhabits.data
 
 /**
  * @author Asatryan on 15.12.2022

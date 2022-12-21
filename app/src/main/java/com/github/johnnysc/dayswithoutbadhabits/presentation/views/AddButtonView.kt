@@ -20,7 +20,10 @@ class AddButtonView : AbstractCardView {
     init {
         inflate(context, R.layout.add_button_view, this)
         setOnClickListener {
-            actions.addCard(positionCallback.position(this))
+            hideAnimation {
+                actions.addCard(positionCallback.position(this))
+            }
         }
+        animateStart()
     }
 }

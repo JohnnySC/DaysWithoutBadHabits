@@ -25,7 +25,10 @@ class NonZeroDaysCardView : AbstractCardView {
         findViewById<TextView>(R.id.daysTextView).text = days
         findViewById<TextView>(R.id.titleTextView).text = text
         findViewById<View>(R.id.editButton).setOnClickListener {
-            actions.editNonZeroDaysCard(positionCallback.position(this), card)
+            hideAnimation {
+                actions.editNonZeroDaysCard(positionCallback.position(this), card)
+            }
         }
+        animateStart()
     }
 }

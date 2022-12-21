@@ -3,7 +3,7 @@ package com.github.johnnysc.dayswithoutbadhabits.presentation
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.github.johnnysc.dayswithoutbadhabits.domain.Card
-import com.github.johnnysc.dayswithoutbadhabits.domain.NewMainInteractor
+import com.github.johnnysc.dayswithoutbadhabits.domain.MainInteractor
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -574,7 +574,7 @@ class MainViewModelTest {
     //endregion
 }
 
-private class FakeInteractor(private val cards: List<Card>) : NewMainInteractor {
+private class FakeInteractor(private val cards: List<Card>) : MainInteractor {
 
     var canAddNewCard: Boolean = true
     val canAddNewCardList = mutableListOf<Boolean>()

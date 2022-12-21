@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <com.github.johnnysc.dayswithoutbadhabits.presentation.views.CardsLayout
-        android:id="@+id/customViewGroup"
+        android:id="@+id/cardsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />

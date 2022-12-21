@@ -8,6 +8,7 @@ import com.github.johnnysc.dayswithoutbadhabits.R
 import com.github.johnnysc.dayswithoutbadhabits.presentation.SimpleTextWatcher
 import com.google.android.material.textfield.TextInputEditText
 
+
 /**
  * @author Asatryan on 18.12.2022
  */
@@ -29,10 +30,14 @@ class MakeCardView : AbstractCardView {
         val cancelButton = findViewById<Button>(R.id.cancelButton)
 
         cancelButton.setOnClickListener {
-            actions.cancelMakeCard(positionCallback.position(this))
+            closeAnimation {
+                actions.cancelMakeCard(positionCallback.position(this@MakeCardView))
+            }
         }
         saveButton.setOnClickListener {
-            actions.saveNewCard(input.text.toString(), positionCallback.position(this))
+            hideAnimation {
+                actions.saveNewCard(input.text.toString(), positionCallback.position(this))
+            }
         }
 
         input.addTextChangedListener(object : SimpleTextWatcher() {
@@ -41,5 +46,6 @@ class MakeCardView : AbstractCardView {
                 saveButton.isEnabled = text.isNotEmpty()
             }
         })
+        animateStart()
     }
 }

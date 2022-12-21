@@ -1,6 +1,5 @@
 package com.github.johnnysc.dayswithoutbadhabits.data
 
-import com.github.johnnysc.dayswithoutbadhabits.Now
 import com.github.johnnysc.dayswithoutbadhabits.domain.Card
 
 /**

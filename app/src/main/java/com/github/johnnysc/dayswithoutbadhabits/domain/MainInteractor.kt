@@ -3,14 +3,14 @@ package com.github.johnnysc.dayswithoutbadhabits.domain
 /**
  * @author Asatryan on 17.12.2022
  */
-interface NewMainInteractor : CRUDCards {
+interface MainInteractor : CRUDCards {
 
     fun canAddNewCard(): Boolean
 
     class Base(
         private val repository: Repository,
         private val maxItemsCount: Int
-    ) : NewMainInteractor {
+    ) : MainInteractor {
 
         override fun cards(): List<Card> {
             val cards = repository.cards()

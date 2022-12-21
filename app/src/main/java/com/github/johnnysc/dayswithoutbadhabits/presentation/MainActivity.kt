@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         val viewModel = (application as ProvideViewModel).provideMainViewModel()
 
         val makeUi = MakeUi.Base(this)
-        val viewGroup = findViewById<CardsLayout>(R.id.customViewGroup)
+        val viewGroup = findViewById<CardsLayout>(R.id.cardsLayout)
         viewModel.observe(this) {
             it.apply(viewGroup, makeUi, viewModel)
         }

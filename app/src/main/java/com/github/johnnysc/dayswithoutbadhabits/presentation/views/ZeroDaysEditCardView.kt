@@ -41,7 +41,9 @@ class ZeroDaysEditCardView : AbstractCardView {
 
         deleteButton.setOnClickListener {
             if (deletePressed)
-                actions.deleteCard(positionCallback.position(this), id)
+                closeAnimation {
+                    actions.deleteCard(positionCallback.position(this@ZeroDaysEditCardView), id)
+                }
             else {
                 saveButton.visibility = View.GONE
                 deleteButton.setText(R.string.confirm_delete_card)
@@ -50,11 +52,13 @@ class ZeroDaysEditCardView : AbstractCardView {
         }
 
         saveButton.setOnClickListener {
-            actions.saveEditedZeroDaysCard(
-                input.text.toString(),
-                positionCallback.position(this),
-                id
-            )
+            hideAnimation {
+                actions.saveEditedZeroDaysCard(
+                    input.text.toString(),
+                    positionCallback.position(this),
+                    id
+                )
+            }
         }
 
         cancelButton.setOnClickListener {
@@ -63,7 +67,10 @@ class ZeroDaysEditCardView : AbstractCardView {
                 deleteButton.setText(R.string.delete_card)
                 saveButton.visibility = View.VISIBLE
             } else
-                actions.cancelEditZeroDaysCard(positionCallback.position(this), card)
+                hideAnimation {
+                    actions.cancelEditZeroDaysCard(positionCallback.position(this), card)
+                }
         }
+        animateStart()
     }
 }

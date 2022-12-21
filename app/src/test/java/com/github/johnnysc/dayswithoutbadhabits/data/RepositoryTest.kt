@@ -14,7 +14,7 @@ class RepositoryTest : BaseTest() {
     fun `test no cards`() {
         val now = FakeNow.Base()
         val cacheDataSource = FakeCacheDataSource(emptyList())
-        val repository = NewRepository(cacheDataSource, now)
+        val repository = BaseRepository(cacheDataSource, now)
 
         val actual: List<Card> = repository.cards()
         val expected = emptyList<Card>()
@@ -35,7 +35,7 @@ class RepositoryTest : BaseTest() {
                 CardCache(id = sevenDays, countStartTime = sevenDays, text = "y")
             )
         )
-        val repository = NewRepository(cacheDataSource, now)
+        val repository = BaseRepository(cacheDataSource, now)
 
         val actual = repository.cards()
         val expected = listOf(
@@ -55,7 +55,7 @@ class RepositoryTest : BaseTest() {
         val cacheDataSource = FakeCacheDataSource(
             listOf(CardCache(id = 0L, countStartTime = 0L, text = "x"))
         )
-        val repository = NewRepository(cacheDataSource, now)
+        val repository = BaseRepository(cacheDataSource, now)
 
         repository.newCard(text = "new habit")
 
@@ -74,7 +74,7 @@ class RepositoryTest : BaseTest() {
         val cacheDataSource = FakeCacheDataSource(
             listOf(CardCache(id = 0L, countStartTime = 0L, text = "x"))
         )
-        val repository = NewRepository(cacheDataSource, now)
+        val repository = BaseRepository(cacheDataSource, now)
 
         repository.updateCard(0L, "new habit")
 
@@ -93,7 +93,7 @@ class RepositoryTest : BaseTest() {
                 CardCache(id = 0L, countStartTime = 0L, text = "y")
             )
         )
-        val repository = NewRepository(cacheDataSource, now)
+        val repository = BaseRepository(cacheDataSource, now)
 
         repository.deleteCard(10L)
 
@@ -111,7 +111,7 @@ class RepositoryTest : BaseTest() {
         val cacheDataSource = FakeCacheDataSource(
             listOf(CardCache(id = 0L, countStartTime = 0L, text = "x"))
         )
-        val repository = NewRepository(cacheDataSource, now)
+        val repository = BaseRepository(cacheDataSource, now)
 
         var actual = repository.cards()
         var expected: List<Card> = listOf(Card.NonZeroDays(7, "x", 0L))
@@ -129,7 +129,7 @@ class RepositoryTest : BaseTest() {
     }
 }
 
-private class FakeCacheDataSource(list: List<CardCache>) : NewCacheDataSource {
+private class FakeCacheDataSource(list: List<CardCache>) : CacheDataSource {
 
     private var cards: MutableList<CardCache> = ArrayList()
 

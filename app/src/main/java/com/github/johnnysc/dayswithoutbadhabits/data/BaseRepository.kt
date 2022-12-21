@@ -1,14 +1,13 @@
 package com.github.johnnysc.dayswithoutbadhabits.data
 
-import com.github.johnnysc.dayswithoutbadhabits.Now
 import com.github.johnnysc.dayswithoutbadhabits.domain.Card
 import com.github.johnnysc.dayswithoutbadhabits.domain.Repository
 
 /**
  * @author Asatryan on 18.12.2022
  */
-class NewRepository(
-    private val cacheDataSource: NewCacheDataSource,
+class BaseRepository(
+    private val cacheDataSource: CacheDataSource,
     private val now: Now,
     private val mapper: CardMapper<Card> = CardMapper.Base(now)
 ) : Repository {
