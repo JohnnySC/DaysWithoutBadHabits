@@ -1,12 +1,13 @@
 package com.github.johnnysc.dayswithoutbadhabits.domain
 
+import com.github.johnnysc.dayswithoutbadhabits.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
  * @author Asatryan on 18.12.2022
  */
-class CardMapperTest {
+class CardMapperTest : BaseTest() {
 
     @Test
     fun `test reset`() {
@@ -19,7 +20,7 @@ class CardMapperTest {
     @Test
     fun `test same card`() {
         val card = Card.NonZeroDays(12, "x", 1L)
-        val actual = card.map(Card.Mapper.Same(1L))
+        val actual = card.map(SameCardMapper(1L))
         val expected = true
         assertEquals(expected, actual)
     }
@@ -27,7 +28,7 @@ class CardMapperTest {
     @Test
     fun `test not same card`() {
         val card = Card.NonZeroDays(12, "x", 1L)
-        val actual = card.map(Card.Mapper.Same(2L))
+        val actual = card.map(SameCardMapper(2L))
         val expected = false
         assertEquals(expected, actual)
     }
@@ -35,7 +36,7 @@ class CardMapperTest {
     @Test
     fun `test duplicate zero days`() {
         val card = Card.ZeroDays("x", 1L)
-        val actual = card.map(Card.Mapper.Duplicate("y"))
+        val actual = card.map(DuplicateCardMapper("y"))
         val expected = Card.ZeroDays("y", 1L)
         assertEquals(expected, actual)
     }
@@ -43,7 +44,7 @@ class CardMapperTest {
     @Test
     fun `test duplicate zero days edit`() {
         val card = Card.ZeroDaysEdit("x", 1L)
-        val actual = card.map(Card.Mapper.Duplicate("y"))
+        val actual = card.map(DuplicateCardMapper("y"))
         val expected = Card.ZeroDaysEdit("y", 1L)
         assertEquals(expected, actual)
     }
@@ -51,7 +52,7 @@ class CardMapperTest {
     @Test
     fun `test duplicate non-zero days`() {
         val card = Card.NonZeroDays(12, "x", 1L)
-        val actual = card.map(Card.Mapper.Duplicate("y"))
+        val actual = card.map(DuplicateCardMapper("y"))
         val expected = Card.NonZeroDays(12, "y", 1L)
         assertEquals(expected, actual)
     }
@@ -59,7 +60,7 @@ class CardMapperTest {
     @Test
     fun `test duplicate non-zero days edit`() {
         val card = Card.NonZeroDaysEdit(12, "x", 1L)
-        val actual = card.map(Card.Mapper.Duplicate("y"))
+        val actual = card.map(DuplicateCardMapper("y"))
         val expected = Card.NonZeroDaysEdit(12, "y", 1L)
         assertEquals(expected, actual)
     }
@@ -67,7 +68,7 @@ class CardMapperTest {
     @Test
     fun `test duplicate add`() {
         val card = Card.Add
-        val actual = card.map(Card.Mapper.Duplicate("y"))
+        val actual = card.map(DuplicateCardMapper("y"))
         val expected = Card.Add
         assertEquals(expected, actual)
     }
@@ -75,7 +76,7 @@ class CardMapperTest {
     @Test
     fun `test duplicate make`() {
         val card = Card.Make
-        val actual = card.map(Card.Mapper.Duplicate("y"))
+        val actual = card.map(DuplicateCardMapper("y"))
         val expected = Card.Make
         assertEquals(expected, actual)
     }

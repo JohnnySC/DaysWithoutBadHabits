@@ -3,4 +3,5 @@
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_inner_margin">48dp</dimen>
+    <dimen name="card_min_size">300dp</dimen>
 </resources>

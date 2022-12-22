@@ -3,6 +3,7 @@ package com.github.johnnysc.dayswithoutbadhabits.presentation.views
 import android.content.Context
 import android.util.AttributeSet
 import com.github.johnnysc.dayswithoutbadhabits.R
+import com.github.johnnysc.dayswithoutbadhabits.domain.Card
 
 /**
  * @author Asatryan on 18.12.2022
@@ -26,4 +27,6 @@ class AddButtonView : AbstractCardView {
         }
         animateStart()
     }
+
+    override fun save() = SaveAndRestoreCard(Card.Add)
 }

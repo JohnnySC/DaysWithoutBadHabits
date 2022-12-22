@@ -13,38 +13,36 @@ sealed class MainUiState {
         actions: CardActions
     )
 
-    data class AddAll(private val cards: List<Card>, private val animationEnabled: Boolean = true) :
-        MainUiState() {
+    data class AddAll(private val cards: List<Card>) : MainUiState() {
         override fun <T : CardUi> apply(
             layout: CardsContainer<T>,
             makeUi: MakeUi<T>,
             actions: CardActions
         ) = cards.forEach { card ->
-            Add(card, animationEnabled).apply(layout, makeUi, actions)
+            Add(card).apply(layout, makeUi, actions)
         }
     }
 
-    data class Add(private val card: Card, private val animationEnabled: Boolean = true) :
-        MainUiState() {
+    data class Add(private val card: Card) : MainUiState() {
         override fun <T : CardUi> apply(
             layout: CardsContainer<T>,
             makeUi: MakeUi<T>,
             actions: CardActions
         ) {
             val view = card.make(makeUi)
-            view.init(layout, actions, animationEnabled)
+            view.init(layout, actions)
             layout.add(view)
         }
     }
 
-    data class Replace(private val position: Int, private val card: Card, private val animationEnabled: Boolean = true) : MainUiState() {
+    data class Replace(private val position: Int, private val card: Card) : MainUiState() {
         override fun <T : CardUi> apply(
             layout: CardsContainer<T>,
             makeUi: MakeUi<T>,
             actions: CardActions
         ) {
             val view = card.make(makeUi)
-            view.init(layout, actions, animationEnabled)
+            view.init(layout, actions)
             layout.replace(position, view)
         }
     }

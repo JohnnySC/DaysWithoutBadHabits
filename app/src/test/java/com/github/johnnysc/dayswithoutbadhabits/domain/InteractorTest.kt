@@ -1,12 +1,13 @@
 package com.github.johnnysc.dayswithoutbadhabits.domain
 
+import com.github.johnnysc.dayswithoutbadhabits.BaseTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
  * @author Asatryan on 18.12.2022
  */
-class InteractorTest {
+class InteractorTest : BaseTest() {
 
     @Test
     fun `test initial less max count`() {
@@ -106,41 +107,40 @@ class InteractorTest {
         assertEquals(expected, actual)
     }
 
-}
+    private class FakeRepository(items: List<Card.Abstract>) : Repository {
+        private val list: MutableList<Card.Abstract> = ArrayList()
 
-private class FakeRepository(items: List<Card>) : Repository {
-    private val list: MutableList<Card> = ArrayList()
+        init {
+            list.addAll(items)
+        }
 
-    init {
-        list.addAll(items)
-    }
+        override fun cards(): List<Card> {
+            return list
+        }
 
-    override fun cards(): List<Card> {
-        return list
-    }
+        override fun newCard(text: String): Card {
+            val zeroDays = Card.ZeroDays(text, 7L)
+            list.add(zeroDays)
+            return zeroDays
+        }
 
-    override fun newCard(text: String): Card {
-        val zeroDays = Card.ZeroDays(text, 7L)
-        list.add(zeroDays)
-        return zeroDays
-    }
+        override fun deleteCard(id: Long) {
+            val item = list.find { it.map(SameCardMapper(id)) }
+            list.remove(item)
+        }
 
-    override fun deleteCard(id: Long) {
-        val item = list.find { it.map(Card.Mapper.Same(id)) }
-        list.remove(item)
-    }
+        override fun updateCard(id: Long, newText: String) {
+            val item = list.find { it.map(SameCardMapper(id)) }
+            val index = list.indexOf(item)
+            val newItem = item!!.map(DuplicateCardMapper(newText))
+            list[index] = newItem
+        }
 
-    override fun updateCard(id: Long, text: String) {
-        val item = list.find { it.map(Card.Mapper.Same(id)) }
-        val index = list.indexOf(item)
-        val newItem = item!!.map(Card.Mapper.Duplicate(text))
-        list[index] = newItem
-    }
-
-    override fun resetCard(id: Long) {
-        val item = list.find { it.map(Card.Mapper.Same(id)) }
-        val index = list.indexOf(item)
-        val newItem = item!!.map(Card.Mapper.ResetDays())
-        list[index] = newItem
+        override fun resetCard(id: Long) {
+            val item = list.find { it.map(SameCardMapper(id)) }
+            val index = list.indexOf(item)
+            val newItem = item!!.map(Card.Mapper.ResetDays())
+            list[index] = newItem
+        }
     }
 }

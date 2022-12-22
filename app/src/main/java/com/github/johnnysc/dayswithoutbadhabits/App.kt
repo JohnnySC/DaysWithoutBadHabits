@@ -31,8 +31,7 @@ class App : Application(), ProvideViewModel {
                     Now.Base(),
                 ),
                 provideInstance.maxCount()
-            ),
-            animationEnabled = provideInstance.animationEnabled()
+            )
         )
     }
 

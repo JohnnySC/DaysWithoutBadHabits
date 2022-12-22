@@ -5,8 +5,10 @@ import android.text.Editable
 import android.util.AttributeSet
 import android.widget.Button
 import com.github.johnnysc.dayswithoutbadhabits.R
+import com.github.johnnysc.dayswithoutbadhabits.domain.Card
 import com.github.johnnysc.dayswithoutbadhabits.presentation.SimpleTextWatcher
 import com.google.android.material.textfield.TextInputEditText
+import java.io.Serializable
 
 
 /**
@@ -22,12 +24,14 @@ class MakeCardView : AbstractCardView {
         defStyleAttr
     )
 
+    private val input: TextInputEditText
+
     init {
         inflate(context, R.layout.make_card_view, this)
 
-        val input = findViewById<TextInputEditText>(R.id.inputEditText)
-        val saveButton = findViewById<Button>(R.id.saveButton)
-        val cancelButton = findViewById<Button>(R.id.cancelButton)
+        input = findViewById(R.id.makeCardInputEditText)
+        val saveButton = findViewById<Button>(R.id.makeCardSaveButton)
+        val cancelButton = findViewById<Button>(R.id.makeCardCancelButton)
 
         cancelButton.setOnClickListener {
             closeAnimation {
@@ -47,5 +51,12 @@ class MakeCardView : AbstractCardView {
             }
         })
         animateStart()
+    }
+
+    override fun save() = SaveAndRestoreCard(Card.Make, listOf(input.text.toString()))
+
+    override fun restore(extras: List<Serializable>) {
+        super.restore(extras)
+        input.setText(extras[0] as String)
     }
 }

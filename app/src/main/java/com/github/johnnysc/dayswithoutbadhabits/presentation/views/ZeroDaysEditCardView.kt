@@ -5,10 +5,12 @@ import android.text.Editable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import com.github.johnnysc.dayswithoutbadhabits.R
 import com.github.johnnysc.dayswithoutbadhabits.domain.Card
 import com.github.johnnysc.dayswithoutbadhabits.presentation.SimpleTextWatcher
 import com.google.android.material.textfield.TextInputEditText
+import java.io.Serializable
 
 /**
  * @author Asatryan on 19.12.2022
@@ -24,20 +26,30 @@ class ZeroDaysEditCardView : AbstractCardView {
     )
 
     private var deletePressed = false
+    private lateinit var card: Card
+    private lateinit var input: TextInputEditText
+    private lateinit var saveButton: Button
+    private lateinit var deleteButton: Button
+
+    private var text = ""
+    private val textChangeListener = object : SimpleTextWatcher() {
+        override fun afterTextChanged(s: Editable?) {
+            saveButton.isEnabled = text != s.toString()
+        }
+    }
 
     fun setUp(id: Long, text: String, card: Card.ZeroDaysEdit) {
+        this.text = text
+        this.card = card
         inflate(context, R.layout.zero_days_edit_card_view, this)
-        val deleteButton = findViewById<Button>(R.id.deleteButton)
-        val saveButton = findViewById<Button>(R.id.saveButton)
-        val cancelButton = findViewById<Button>(R.id.cancelButton)
-        val input = findViewById<TextInputEditText>(R.id.inputEditText)
+        deleteButton = findViewById(R.id.zeroDaysEditDeleteButton)
+        saveButton = findViewById(R.id.zeroDaysEditSaveButton)
+        val cancelButton = findViewById<Button>(R.id.zeroDaysEditCancelButton)
+        input = (findViewById<LinearLayout>(R.id.zeroDaysEditLinearLayout)
+            .getChildAt(0) as TextInputEditText)
 
+        input.addTextChangedListener(textChangeListener)
         input.setText(text)
-        input.addTextChangedListener(object : SimpleTextWatcher() {
-            override fun afterTextChanged(s: Editable?) {
-                saveButton.isEnabled = text != s.toString()
-            }
-        })
 
         deleteButton.setOnClickListener {
             if (deletePressed)
@@ -72,5 +84,20 @@ class ZeroDaysEditCardView : AbstractCardView {
                 }
         }
         animateStart()
+    }
+
+    override fun save(): SaveAndRestoreCard {
+        input.removeTextChangedListener(textChangeListener)
+        return SaveAndRestoreCard(card, listOf(deletePressed, input.text.toString()))
+    }
+
+    override fun restore(extras: List<Serializable>) {
+        super.restore(extras)
+        deletePressed = extras[0] as Boolean
+        input.setText(extras[1] as String)
+        if (deletePressed) {
+            saveButton.visibility = View.GONE
+            deleteButton.setText(R.string.confirm_delete_card)
+        }
     }
 }
