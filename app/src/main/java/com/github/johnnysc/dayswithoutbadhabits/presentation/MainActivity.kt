@@ -11,16 +11,24 @@ import com.github.johnnysc.dayswithoutbadhabits.presentation.views.CardsLayout
  */
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var cardsLayout: CardsLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val viewModel = (application as ProvideViewModel).provideMainViewModel()
 
         val makeUi = MakeUi.Base(this)
-        val viewGroup = findViewById<CardsLayout>(R.id.cardsLayout)
+        cardsLayout = findViewById(R.id.cardsLayout)
         viewModel.observe(this) {
-            it.apply(viewGroup, makeUi, viewModel)
+            it.apply(cardsLayout, makeUi, viewModel)
         }
         viewModel.init(savedInstanceState == null)
+        cardsLayout.restore(savedInstanceState, makeUi, viewModel)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        cardsLayout.save(outState)
     }
 }

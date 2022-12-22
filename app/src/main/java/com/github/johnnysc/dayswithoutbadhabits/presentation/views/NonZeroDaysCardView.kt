@@ -20,15 +20,20 @@ class NonZeroDaysCardView : AbstractCardView {
         defStyleAttr
     )
 
+    private lateinit var card: Card.NonZeroDays
+
     fun setUp(days: String, text: String, card: Card.NonZeroDays) {
+        this.card = card
         inflate(context, R.layout.non_zero_days_card_view, this)
-        findViewById<TextView>(R.id.daysTextView).text = days
-        findViewById<TextView>(R.id.titleTextView).text = text
-        findViewById<View>(R.id.editButton).setOnClickListener {
+        findViewById<TextView>(R.id.nonZeroDaysTextView).text = days
+        findViewById<TextView>(R.id.nonZeroDaysTitleTextView).text = text
+        findViewById<View>(R.id.nonZeroDaysEditButton).setOnClickListener {
             hideAnimation {
                 actions.editNonZeroDaysCard(positionCallback.position(this), card)
             }
         }
         animateStart()
     }
+
+    override fun save() = SaveAndRestoreCard(card)
 }

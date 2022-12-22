@@ -5,12 +5,15 @@ import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
+import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.github.johnnysc.dayswithoutbadhabits.data.SharedPref
 import com.github.johnnysc.dayswithoutbadhabits.presentation.MainActivity
 import org.hamcrest.CoreMatchers.not
@@ -36,6 +39,12 @@ abstract class AbstractUiTest {
     }
 
     protected abstract fun init(sharedPref: SharedPreferences)
+
+    protected fun rotateLeft() =
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).setOrientationLeft()
+
+    protected fun returnRotated() =
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).setOrientationNatural()
 
     protected fun ViewInteraction.check(text: String) = check(matches(withText(text)))
     protected fun ViewInteraction.click() = perform(ViewActions.click())

@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/zeroDaysEditCardView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nonZeroDaysEditCardView"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="@dimen/card_margin"
-    app:cardBackgroundColor="@color/teal_200"
+    app:cardBackgroundColor="@color/purple_200"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
     <LinearLayout
-        android:id="@+id/zeroDaysEditLinearLayout"
+        android:id="@+id/nonZeroDaysLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="end"
+        android:minWidth="@dimen/card_min_size"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nonZeroDaysEditTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="80sp"
+            tools:text="1283" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/card_margin"
-            android:layout_marginTop="@dimen/card_inner_margin"
             android:background="@color/white"
             android:hint="@string/hint"
             android:minHeight="@dimen/card_inner_margin" />
 
-        <Button
-            android:id="@+id/zeroDaysEditDeleteButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:layout_marginTop="72dp"
-            android:text="@string/delete_card" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +44,30 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/zeroDaysEditCancelButton"
+                android:id="@+id/nonZeroDaysEditResetButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:text="@string/reset_card" />
+
+            <Button
+                android:id="@+id/nonZeroDaysEditDeleteButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:text="@string/delete_card" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/nonZeroDaysEditCancelButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,13 +75,12 @@
                 android:text="@string/cancel" />
 
             <Button
-                android:id="@+id/zeroDaysEditSaveButton"
+                android:id="@+id/nonZeroDaysEditSaveButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/card_margin"
                 android:enabled="false"
-                android:minHeight="48dp"
                 android:text="@string/save" />
 
         </LinearLayout>

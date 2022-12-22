@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nonZeroDaysEditCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margin"
-    android:id="@+id/nonZeroDaysEditCardView"
     app:cardBackgroundColor="@color/purple_200"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
     <LinearLayout
+        android:id="@+id/nonZeroDaysLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/daysTextView"
+            android:id="@+id/nonZeroDaysEditTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/zero"
-            android:textSize="80sp" />
+            android:textSize="80sp"
+            tools:text="1283" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/card_margin"
@@ -37,7 +38,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/resetButton"
+                android:id="@+id/nonZeroDaysEditResetButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,7 +46,7 @@
                 android:text="@string/reset_card" />
 
             <Button
-                android:id="@+id/deleteButton"
+                android:id="@+id/nonZeroDaysEditDeleteButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +61,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/cancelButton"
+                android:id="@+id/nonZeroDaysEditCancelButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,14 +69,13 @@
                 android:text="@string/cancel" />
 
             <Button
-                android:id="@+id/saveButton"
+                android:id="@+id/nonZeroDaysEditSaveButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/card_margin"
                 android:enabled="false"
                 android:text="@string/save" />
-
 
         </LinearLayout>
     </LinearLayout>

@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import com.github.johnnysc.dayswithoutbadhabits.core.SimpleAnimator
 import com.github.johnnysc.dayswithoutbadhabits.presentation.CardActions
 import com.github.johnnysc.dayswithoutbadhabits.presentation.CardUi
+import java.io.Serializable
 
 /**
  * @author Asatryan on 18.12.2022
@@ -26,14 +27,8 @@ abstract class AbstractCardView : FrameLayout, CardUi {
 
     protected var positionCallback: PositionCallback = PositionCallback.Empty()
     protected var actions: CardActions = CardActions.Empty()
-    protected var animationEnabled: Boolean = true
 
-    override fun init(
-        positionCallback: PositionCallback,
-        actions: CardActions,
-        animationEnabled: Boolean
-    ) {
-        this.animationEnabled = animationEnabled
+    override fun init(positionCallback: PositionCallback, actions: CardActions, ) {
         this.actions = actions
         this.positionCallback = positionCallback
     }
@@ -43,48 +38,46 @@ abstract class AbstractCardView : FrameLayout, CardUi {
         actions = CardActions.Empty()
     }
 
+    open fun restore(extras: List<Serializable>) = Unit
+
     protected fun closeAnimation(action: () -> Unit) {
-        if (animationEnabled) {
-            val anim = ValueAnimator.ofInt(measuredHeight, 0)
-            anim.addUpdateListener { valueAnimator ->
-                val value = valueAnimator.animatedValue as Int
-                val layoutParams: ViewGroup.LayoutParams = layoutParams
-                layoutParams.height = value
-                setLayoutParams(layoutParams)
-            }
-            anim.duration = ANIMATION_DURATION
-            anim.addListener(object : SimpleAnimator() {
-                override fun onAnimationEnd(animation: Animator?) = action.invoke()
-            })
-            anim.start()
-        } else action.invoke()
+        val anim = ValueAnimator.ofInt(measuredHeight, 0)
+        anim.addUpdateListener { valueAnimator ->
+            val value = valueAnimator.animatedValue as Int
+            val layoutParams: ViewGroup.LayoutParams = layoutParams
+            layoutParams.height = value
+            setLayoutParams(layoutParams)
+        }
+        anim.duration = ANIMATION_DURATION
+        anim.addListener(object : SimpleAnimator() {
+            override fun onAnimationEnd(animation: Animator?) = action.invoke()
+        })
+        anim.start()
     }
 
     protected fun hideAnimation(action: () -> Unit) {
-        if (animationEnabled) {
-            animate().apply {
-                interpolator = LinearInterpolator()
-                duration = ANIMATION_DURATION
-                alpha(0f)
-                setListener(object : SimpleAnimator() {
-                    override fun onAnimationEnd(animation: Animator?) = action.invoke()
-                })
-                start()
-            }
-        } else action.invoke()
+        animate().apply {
+            interpolator = LinearInterpolator()
+            duration = ANIMATION_DURATION
+            alpha(0f)
+            setListener(object : SimpleAnimator() {
+                override fun onAnimationEnd(animation: Animator?) = action.invoke()
+            })
+            start()
+        }
     }
 
     protected fun animateStart() {
-        if (animationEnabled) {
-            alpha = 0.1f
-            animate().apply {
-                interpolator = LinearInterpolator()
-                duration = ANIMATION_DURATION
-                alpha(1f)
-                start()
-            }
+        alpha = 0.1f
+        animate().apply {
+            interpolator = LinearInterpolator()
+            duration = ANIMATION_DURATION
+            alpha(1f)
+            start()
         }
     }
+
+    abstract fun save(): SaveAndRestoreCard
 
     companion object {
         private const val ANIMATION_DURATION = 300L

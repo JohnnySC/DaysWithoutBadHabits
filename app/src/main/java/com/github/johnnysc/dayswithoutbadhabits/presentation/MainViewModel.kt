@@ -14,7 +14,6 @@ class MainViewModel(
     private val communication: MainCommunication.Mutable,
     private val interactor: MainInteractor,
     private val changeEditable: Card.Mapper<Card> = Card.Mapper.ChangeEditable(),
-    private val animationEnabled: Boolean = true,
 ) : Init, Communication.Observe<MainUiState>, CardActions {
 
     override fun observe(owner: LifecycleOwner, observer: Observer<MainUiState>) =
@@ -22,68 +21,56 @@ class MainViewModel(
 
     override fun init(isFirstRun: Boolean) {
         if (isFirstRun)
-            communication.put(MainUiState.AddAll(interactor.cards(), animationEnabled))
+            communication.put(MainUiState.AddAll(interactor.cards()))
     }
 
     override fun addCard(position: Int) =
-        communication.put(MainUiState.Replace(position, Card.Make, animationEnabled))
+        communication.put(MainUiState.Replace(position, Card.Make))
 
     override fun cancelMakeCard(position: Int) =
-        communication.put(MainUiState.Replace(position, Card.Add, animationEnabled))
+        communication.put(MainUiState.Replace(position, Card.Add))
 
     override fun saveNewCard(text: String, position: Int) {
         val card = interactor.newCard(text)
         val canAddNewCard = interactor.canAddNewCard()
-        communication.put(MainUiState.Replace(position, card, animationEnabled))
+        communication.put(MainUiState.Replace(position, card))
         if (canAddNewCard)
-            communication.put(MainUiState.Add(Card.Add, animationEnabled))
+            communication.put(MainUiState.Add(Card.Add))
     }
 
     override fun editZeroDaysCard(position: Int, card: Card.ZeroDays) {
-        communication.put(MainUiState.Replace(position, card.map(changeEditable), animationEnabled))
+        communication.put(MainUiState.Replace(position, card.map(changeEditable)))
     }
 
     override fun cancelEditZeroDaysCard(position: Int, card: Card.ZeroDaysEdit) =
-        communication.put(MainUiState.Replace(position, card.map(changeEditable), animationEnabled))
+        communication.put(MainUiState.Replace(position, card.map(changeEditable)))
 
     override fun deleteCard(position: Int, id: Long) {
         val canAddNewCard = interactor.canAddNewCard()
         interactor.deleteCard(id)
         communication.put(MainUiState.Remove(position))
         if (!canAddNewCard)
-            communication.put(MainUiState.Add(Card.Add, animationEnabled))
+            communication.put(MainUiState.Add(Card.Add))
     }
 
     override fun saveEditedZeroDaysCard(text: String, position: Int, id: Long) {
         interactor.updateCard(id, text)
-        communication.put(MainUiState.Replace(position, Card.ZeroDays(text, id), animationEnabled))
+        communication.put(MainUiState.Replace(position, Card.ZeroDays(text, id)))
     }
 
     override fun editNonZeroDaysCard(position: Int, card: Card.NonZeroDays) =
-        communication.put(MainUiState.Replace(position, card.map(changeEditable), animationEnabled))
+        communication.put(MainUiState.Replace(position, card.map(changeEditable)))
 
     override fun cancelEditNonZeroDaysCard(position: Int, card: Card.NonZeroDaysEdit) =
-        communication.put(MainUiState.Replace(position, card.map(changeEditable), animationEnabled))
+        communication.put(MainUiState.Replace(position, card.map(changeEditable)))
 
     override fun saveEditedNonZeroDaysCard(days: Int, text: String, position: Int, id: Long) {
         interactor.updateCard(id, text)
-        communication.put(
-            MainUiState.Replace(
-                position,
-                Card.NonZeroDays(days, text, id),
-                animationEnabled
-            )
-        )
+        communication.put(MainUiState.Replace(position, Card.NonZeroDays(days, text, id)))
     }
 
     override fun resetNonZeroDaysCard(position: Int, card: Card.NonZeroDaysEdit) {
         card.map(Card.Mapper.Reset(interactor))
-        communication.put(
-            MainUiState.Replace(
-                position,
-                card.map(Card.Mapper.ResetDays()),
-                animationEnabled
-            )
-        )
+        communication.put(MainUiState.Replace(position, card.map(Card.Mapper.ResetDays())))
     }
 }

@@ -20,14 +20,19 @@ class ZeroDaysCardView : AbstractCardView {
         defStyleAttr
     )
 
+    private lateinit var card: Card
+
     fun setUp(text: String, card: Card.ZeroDays) {
+        this.card = card
         inflate(context, R.layout.zero_days_card_view, this)
-        findViewById<TextView>(R.id.titleTextView).text = text
-        findViewById<View>(R.id.editButton).setOnClickListener {
+        findViewById<TextView>(R.id.zeroDaysTitleTextView).text = text
+        findViewById<View>(R.id.zeroDaysEditButton).setOnClickListener {
             hideAnimation {
                 actions.editZeroDaysCard(positionCallback.position(this), card)
             }
         }
         animateStart()
     }
+
+    override fun save() = SaveAndRestoreCard(card)
 }

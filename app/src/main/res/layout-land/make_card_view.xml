@@ -2,15 +2,16 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/makeCardView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="@dimen/card_margin"
     app:cardBackgroundColor="@color/teal_700"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:minWidth="@dimen/card_min_size">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/makeCardInputEditText"
@@ -35,9 +36,8 @@
             android:layout_marginBottom="@dimen/card_margin"
             android:enabled="false"
             android:text="@string/save"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/makeCardInputEditText" />
+            app:layout_constraintTop_toBottomOf="@id/makeCardInputEditText"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/makeCardCancelButton"

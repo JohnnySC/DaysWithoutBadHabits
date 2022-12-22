@@ -3,7 +3,7 @@ package com.github.johnnysc.dayswithoutbadhabits
 /**
  * @author Asatryan on 20.12.2022
  */
-class MainPage : AbstractPage() {
+class MainPage {
 
     fun addCard(position: Int) = AddCard(position)
     fun makeCard(position: Int) = MakeCard(position)
@@ -16,47 +16,59 @@ class MainPage : AbstractPage() {
 class AddCard(position: Int) : AbstractCard(R.id.addCardView, position)
 
 class MakeCard(position: Int) : AbstractCard(R.id.makeCardView, position) {
-    private val inputId = R.id.inputEditText
-    private val saveButtonId = R.id.saveButton
-    private val cancelButtonId = R.id.cancelButton
+    private val inputId = R.id.makeCardInputEditText
+    private val saveButtonId = R.id.makeCardSaveButton
+    private val cancelButtonId = R.id.makeCardCancelButton
 
     fun inputView() = inputId.viewAt(position)
     fun saveButton() = saveButtonId.viewAt(position)
     fun cancelButton() = cancelButtonId.viewAt(position)
 }
 
-abstract class SomeDaysCard(id: Int, position: Int) : AbstractCard(id, position) {
-    private val daysId = R.id.daysTextView
-    private val titleId = R.id.titleTextView
-    private val editButtonId = R.id.editButton
+class ZeroDaysCard(position: Int) : AbstractCard(R.id.zeroDaysCardView, position) {
+    private val daysId = R.id.zeroDaysTextView
+    private val titleId = R.id.zeroDaysTitleTextView
+    private val editButtonId = R.id.zeroDaysEditButton
 
     fun daysView() = daysId.viewAt(position)
     fun titleView() = titleId.viewAt(position)
     fun editButton() = editButtonId.viewAt(position)
 }
 
-class ZeroDaysCard(position: Int) : SomeDaysCard(R.id.zeroDaysCardView, position)
-
-abstract class SomeDaysEditCard(id: Int, position: Int) : AbstractCard(id, position) {
-    private val cancelButtonId = R.id.cancelButton
-    private val deleteButton = R.id.deleteButton
-    private val inputViewId = R.id.inputEditText
-    private val saveButtonId = R.id.saveButton
+class ZeroDaysEditCard(position: Int) : AbstractCard(R.id.zeroDaysEditCardView, position) {
+    private val cancelButtonId = R.id.zeroDaysEditCancelButton
+    private val deleteButton = R.id.zeroDaysEditDeleteButton
+    private val linearLayout = R.id.zeroDaysEditLinearLayout
+    private val saveButtonId = R.id.zeroDaysEditSaveButton
 
     fun cancelButton() = cancelButtonId.viewAt(position)
     fun deleteButton() = deleteButton.viewAt(position)
-    fun inputView() = inputViewId.viewAt(position)
+    fun inputView() = linearLayout.viewAt(position, 0)
     fun saveButton() = saveButtonId.viewAt(position)
 }
 
-class ZeroDaysEditCard(position: Int) : SomeDaysEditCard(R.id.zeroDaysEditCardView, position)
+class NonZeroDaysCard(position: Int) : AbstractCard(R.id.nonZeroDaysCardView, position) {
+    private val daysId = R.id.nonZeroDaysTextView
+    private val titleId = R.id.nonZeroDaysTitleTextView
+    private val editButtonId = R.id.nonZeroDaysEditButton
 
-class NonZeroDaysCard(position: Int) : SomeDaysCard(R.id.nonZeroDaysCardView, position)
+    fun daysView() = daysId.viewAt(position)
+    fun titleView() = titleId.viewAt(position)
+    fun editButton() = editButtonId.viewAt(position)
+}
 
-class NonZeroDaysEditCard(position: Int) :
-    SomeDaysEditCard(R.id.nonZeroDaysEditCardView, position) {
-    private val resetButtonId = R.id.resetButton
-    private val daysId = R.id.daysTextView
+class NonZeroDaysEditCard(position: Int) : AbstractCard(R.id.nonZeroDaysEditCardView, position) {
+    private val cancelButtonId = R.id.nonZeroDaysEditCancelButton
+    private val deleteButton = R.id.nonZeroDaysEditDeleteButton
+    private val linearLayoutId = R.id.nonZeroDaysLinearLayout
+    private val saveButtonId = R.id.nonZeroDaysEditSaveButton
+    private val resetButtonId = R.id.nonZeroDaysEditResetButton
+    private val daysId = R.id.nonZeroDaysEditTextView
+
+    fun cancelButton() = cancelButtonId.viewAt(position)
+    fun deleteButton() = deleteButton.viewAt(position)
+    fun inputView() = linearLayoutId.viewAt(position, 1)
+    fun saveButton() = saveButtonId.viewAt(position)
 
     fun daysView() = daysId.viewAt(position)
     fun resetButton() = resetButtonId.viewAt(position)
