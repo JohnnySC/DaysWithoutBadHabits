@@ -49,4 +49,20 @@ class BaseRepository(
         mutableList[index] = newCard
         cacheDataSource.save(mutableList)
     }
+
+    override fun moveCardUp(position: Int) {
+        val mutableList = cacheDataSource.read()
+        val card = mutableList[position]
+        mutableList.remove(card)
+        mutableList.add(position - 1, card)
+        cacheDataSource.save(mutableList)
+    }
+
+    override fun moveCardDown(position: Int) {
+        val mutableList = cacheDataSource.read()
+        val card = mutableList[position]
+        mutableList.remove(card)
+        mutableList.add(position + 1, card)
+        cacheDataSource.save(mutableList)
+    }
 }

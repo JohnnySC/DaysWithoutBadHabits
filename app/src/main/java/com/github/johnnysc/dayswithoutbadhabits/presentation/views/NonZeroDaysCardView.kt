@@ -10,7 +10,7 @@ import com.github.johnnysc.dayswithoutbadhabits.domain.Card
 /**
  * @author Asatryan on 19.12.2022
  */
-class NonZeroDaysCardView : AbstractCardView {
+class NonZeroDaysCardView : AbstractCardView.AbleToMove{
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

@@ -572,6 +572,28 @@ class MainViewModelTest {
         assertEquals(3, communication.list.size)
     }
     //endregion
+
+    @Test
+    fun `test move card up and down`() {
+        val communication = FakeCommunication()
+        val interactor =
+            FakeInteractor(
+                listOf(
+                    Card.NonZeroDays(
+                        days = 12,
+                        text = "days without smoking",
+                        id = 1L
+                    ), Card.Add
+                )
+            )
+        val viewModel = MainViewModel(communication, interactor)
+
+        viewModel.moveCardUp(1)
+        assertEquals(1, interactor.cardMovedUpPosition)
+
+        viewModel.moveCardDown(0)
+        assertEquals(0, interactor.cardMovedDownPosition)
+    }
 }
 
 private class FakeInteractor(private val cards: List<Card>) : MainInteractor {
@@ -582,6 +604,8 @@ private class FakeInteractor(private val cards: List<Card>) : MainInteractor {
     var deleteCardList = mutableListOf<Long>()
     var updateCardList = mutableListOf<Long>()
     var resetCardList = mutableListOf<Long>()
+    var cardMovedUpPosition = -1
+    var cardMovedDownPosition = -1
 
     override fun cards(): List<Card> {
         return cards
@@ -607,6 +631,14 @@ private class FakeInteractor(private val cards: List<Card>) : MainInteractor {
 
     override fun resetCard(id: Long) {
         resetCardList.add(id)
+    }
+
+    override fun moveCardUp(position: Int) {
+        cardMovedUpPosition = position
+    }
+
+    override fun moveCardDown(position: Int) {
+        cardMovedDownPosition = position
     }
 }
 

@@ -127,6 +127,34 @@ class RepositoryTest : BaseTest() {
             cacheDataSource.read()[0]
         )
     }
+
+    @Test
+    fun `test move card up`() {
+        val now = FakeNow.Base()
+        val cardOne = CardCache(id = 10L, countStartTime = 10L, text = "x")
+        val cardTwo = CardCache(id = 0L, countStartTime = 0L, text = "y")
+        val cacheDataSource = FakeCacheDataSource(listOf(cardOne, cardTwo))
+        val repository = BaseRepository(cacheDataSource, now)
+
+        repository.moveCardUp(1)
+
+        val expected = listOf(cardTwo, cardOne)
+        assertEquals(expected, cacheDataSource.read())
+    }
+
+    @Test
+    fun `test move card down`() {
+        val now = FakeNow.Base()
+        val cardOne = CardCache(id = 10L, countStartTime = 10L, text = "x")
+        val cardTwo = CardCache(id = 0L, countStartTime = 0L, text = "y")
+        val cacheDataSource = FakeCacheDataSource(listOf(cardOne, cardTwo))
+        val repository = BaseRepository(cacheDataSource, now)
+
+        repository.moveCardDown(0)
+
+        val expected = listOf(cardTwo, cardOne)
+        assertEquals(expected, cacheDataSource.read())
+    }
 }
 
 private class FakeCacheDataSource(list: List<CardCache>) : CacheDataSource {

@@ -1,9 +1,11 @@
 package com.github.johnnysc.dayswithoutbadhabits.domain
 
+import com.github.johnnysc.dayswithoutbadhabits.presentation.MoveCardActions
+
 /**
  * @author Asatryan on 17.12.2022
  */
-interface MainInteractor : CRUDCards {
+interface MainInteractor : CRUDCards, MoveCardActions {
 
     fun canAddNewCard(): Boolean
 
@@ -43,6 +45,10 @@ interface MainInteractor : CRUDCards {
         override fun resetCard(id: Long) {
             repository.resetCard(id)
         }
+
+        override fun moveCardUp(position: Int) = repository.moveCardUp(position)
+
+        override fun moveCardDown(position: Int) = repository.moveCardDown(position)
     }
 }
 

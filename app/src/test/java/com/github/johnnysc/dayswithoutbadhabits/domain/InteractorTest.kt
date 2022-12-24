@@ -107,6 +107,32 @@ class InteractorTest : BaseTest() {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun `test move card up`() {
+        val first = Card.NonZeroDays(12, "a", 1L)
+        val second = Card.NonZeroDays(13, "b", 2L)
+        val repository = FakeRepository(listOf(first, second))
+        val interactor = MainInteractor.Base(repository, maxItemsCount = 2)
+
+        interactor.moveCardUp(1)
+
+        val expected = listOf(second, first)
+        assertEquals(expected, repository.cards())
+    }
+
+    @Test
+    fun `test move card down`() {
+        val first = Card.NonZeroDays(12, "a", 1L)
+        val second = Card.NonZeroDays(13, "b", 2L)
+        val repository = FakeRepository(listOf(first, second))
+        val interactor = MainInteractor.Base(repository, maxItemsCount = 2)
+
+        interactor.moveCardDown(0)
+
+        val expected = listOf(second, first)
+        assertEquals(expected, repository.cards())
+    }
+
     private class FakeRepository(items: List<Card.Abstract>) : Repository {
         private val list: MutableList<Card.Abstract> = ArrayList()
 
@@ -141,6 +167,18 @@ class InteractorTest : BaseTest() {
             val index = list.indexOf(item)
             val newItem = item!!.map(Card.Mapper.ResetDays())
             list[index] = newItem
+        }
+
+        override fun moveCardUp(position: Int) {
+            val card = list[position]
+            list.remove(card)
+            list.add(position - 1, card)
+        }
+
+        override fun moveCardDown(position: Int) {
+            val card = list[position]
+            list.remove(card)
+            list.add(position + 1, card)
         }
     }
 }

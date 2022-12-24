@@ -36,3 +36,8 @@ interface NonZeroDaysEditCardActions : DeleteCard {
 interface DeleteCard {
     fun deleteCard(position: Int, id: Long)
 }
+
+interface MoveCardActions {
+    fun moveCardUp(position: Int)
+    fun moveCardDown(position: Int)
+}
