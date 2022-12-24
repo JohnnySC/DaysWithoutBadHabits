@@ -24,6 +24,10 @@ class MainViewModel(
             communication.put(MainUiState.AddAll(interactor.cards()))
     }
 
+    override fun moveCardUp(position: Int) = interactor.moveCardUp(position)
+
+    override fun moveCardDown(position: Int) = interactor.moveCardDown(position)
+
     override fun addCard(position: Int) =
         communication.put(MainUiState.Replace(position, Card.Make))
 

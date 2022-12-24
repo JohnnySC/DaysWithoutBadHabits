@@ -5,6 +5,7 @@
 
     <com.github.johnnysc.dayswithoutbadhabits.presentation.views.CardsLayout
         android:id="@+id/cardsLayout"
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />

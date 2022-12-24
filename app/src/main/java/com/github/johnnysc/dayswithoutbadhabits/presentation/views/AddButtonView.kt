@@ -8,7 +8,7 @@ import com.github.johnnysc.dayswithoutbadhabits.domain.Card
 /**
  * @author Asatryan on 18.12.2022
  */
-class AddButtonView : AbstractCardView {
+class AddButtonView : AbstractCardView.NonMoving {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

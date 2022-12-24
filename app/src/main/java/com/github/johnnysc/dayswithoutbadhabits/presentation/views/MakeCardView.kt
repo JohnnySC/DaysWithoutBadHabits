@@ -14,7 +14,7 @@ import java.io.Serializable
 /**
  * @author Asatryan on 18.12.2022
  */
-class MakeCardView : AbstractCardView {
+class MakeCardView : AbstractCardView.NonMoving {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

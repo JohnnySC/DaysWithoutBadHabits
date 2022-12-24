@@ -15,7 +15,7 @@ import java.io.Serializable
 /**
  * @author Asatryan on 19.12.2022
  */
-class ZeroDaysEditCardView : AbstractCardView {
+class ZeroDaysEditCardView : AbstractCardView.AbleToMove.Editable {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -33,7 +33,7 @@ class ZeroDaysEditCardView : AbstractCardView {
 
     private var text = ""
     private val textChangeListener = object : SimpleTextWatcher() {
-        override fun afterTextChanged(s: Editable?) {
+        override fun afterTextChanged(s: android.text.Editable?) {
             saveButton.isEnabled = text != s.toString()
         }
     }
@@ -42,6 +42,7 @@ class ZeroDaysEditCardView : AbstractCardView {
         this.text = text
         this.card = card
         inflate(context, R.layout.zero_days_edit_card_view, this)
+        setUpNavigationButtons()
         deleteButton = findViewById(R.id.zeroDaysEditDeleteButton)
         saveButton = findViewById(R.id.zeroDaysEditSaveButton)
         val cancelButton = findViewById<Button>(R.id.zeroDaysEditCancelButton)

@@ -60,6 +60,27 @@
             android:gravity="end"
             android:orientation="horizontal">
 
+            <ImageButton
+                android:id="@+id/upButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/card_margin"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_arrow_up_24"
+                android:visibility="visible"
+                android:contentDescription="@string/up" />
+
+            <ImageButton
+                android:id="@+id/downButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_arrow_down_24"
+                android:visibility="visible"
+                android:contentDescription="@string/down" />
+
             <Button
                 android:id="@+id/nonZeroDaysEditCancelButton"
                 style="?android:attr/buttonBarButtonStyle"

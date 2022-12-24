@@ -36,12 +36,16 @@ class ZeroDaysCard(position: Int) : AbstractCard(R.id.zeroDaysCardView, position
 }
 
 class ZeroDaysEditCard(position: Int) : AbstractCard(R.id.zeroDaysEditCardView, position) {
-    private val cancelButtonId = R.id.zeroDaysEditCancelButton
+    private val cancelButton = R.id.zeroDaysEditCancelButton
     private val deleteButton = R.id.zeroDaysEditDeleteButton
     private val linearLayout = R.id.zeroDaysEditLinearLayout
     private val saveButtonId = R.id.zeroDaysEditSaveButton
+    private val upButton = R.id.upButton
+    private val downButton = R.id.downButton
 
-    fun cancelButton() = cancelButtonId.viewAt(position)
+    fun upButton() = upButton.viewAt(position)
+    fun downButton() = downButton.viewAt(position)
+    fun cancelButton() = cancelButton.viewAt(position)
     fun deleteButton() = deleteButton.viewAt(position)
     fun inputView() = linearLayout.viewAt(position, 0)
     fun saveButton() = saveButtonId.viewAt(position)
@@ -64,6 +68,11 @@ class NonZeroDaysEditCard(position: Int) : AbstractCard(R.id.nonZeroDaysEditCard
     private val saveButtonId = R.id.nonZeroDaysEditSaveButton
     private val resetButtonId = R.id.nonZeroDaysEditResetButton
     private val daysId = R.id.nonZeroDaysEditTextView
+    private val upButton = R.id.upButton
+    private val downButton = R.id.downButton
+
+    fun upButton() = upButton.viewAt(position)
+    fun downButton() = downButton.viewAt(position)
 
     fun cancelButton() = cancelButtonId.viewAt(position)
     fun deleteButton() = deleteButton.viewAt(position)

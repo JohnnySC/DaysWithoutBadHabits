@@ -6,9 +6,7 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.core.view.children
 import com.github.johnnysc.dayswithoutbadhabits.domain.Card
-import com.github.johnnysc.dayswithoutbadhabits.presentation.CardActions
-import com.github.johnnysc.dayswithoutbadhabits.presentation.CardsContainer
-import com.github.johnnysc.dayswithoutbadhabits.presentation.MakeUi
+import com.github.johnnysc.dayswithoutbadhabits.presentation.*
 import java.io.Serializable
 
 /**
@@ -24,9 +22,15 @@ class CardsLayout : LinearLayout, CardsContainer<AbstractCardView> {
         defStyleAttr
     )
 
-    override fun add(index: Int, view: AbstractCardView) = addView(view, index)
+    override fun add(index: Int, view: AbstractCardView) {
+        addView(view, index)
+        ShowCardsNavigationButtons.Base(children.toList().map { it as CanBeMoved }).show()
+    }
 
-    override fun add(view: AbstractCardView) = addView(view)
+    override fun add(view: AbstractCardView) {
+        addView(view)
+        ShowCardsNavigationButtons.Base(children.toList().map { it as CanBeMoved }).show()
+    }
 
     override fun replace(index: Int, view: AbstractCardView) {
         remove(index)
@@ -37,6 +41,21 @@ class CardsLayout : LinearLayout, CardsContainer<AbstractCardView> {
         val child = getChildAt(index)
         (child as AbstractCardView).clear()
         removeView(child)
+        ShowCardsNavigationButtons.Base(children.toList().map { it as CanBeMoved }).show()
+    }
+
+    override fun moveUp(position: Int) {
+        val view = getChildAt(position)
+        removeView(view)
+        addView(view, position - 1)
+        ShowCardsNavigationButtons.Base(children.toList().map { it as CanBeMoved }).show()
+    }
+
+    override fun moveDown(position: Int) {
+        val view = getChildAt(position)
+        removeView(view)
+        addView(view, position + 1)
+        ShowCardsNavigationButtons.Base(children.toList().map { it as CanBeMoved }).show()
     }
 
     override fun position(cardUi: AbstractCardView) = indexOfChild(cardUi)
