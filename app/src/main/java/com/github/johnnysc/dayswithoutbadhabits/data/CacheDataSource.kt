@@ -1,32 +1,30 @@
 package com.github.johnnysc.dayswithoutbadhabits.data
 
-import android.content.SharedPreferences
-import com.google.gson.Gson
-
 /**
  * @author Asatryan on 18.12.2022
  */
 interface CacheDataSource {
+
     fun read(): MutableList<CardCache>
     fun save(list: MutableList<CardCache>)
 
     class Base(
-        private val sharedPreferences: SharedPreferences,
-        private val gson: Gson
+        private val stringStorage: StringStorage,
+        private val serialization: Serialization
     ) : CacheDataSource {
 
         override fun read(): MutableList<CardCache> {
             val empty = CacheListWrapper()
-            val default = gson.toJson(empty)
-            val cache = sharedPreferences.getString(KEY, default)
-            val saved = gson.fromJson(cache, CacheListWrapper::class.java)
+            val default = serialization.toJson(empty)
+            val cache = stringStorage.read(KEY, default)
+            val saved = serialization.fromJson(cache, CacheListWrapper::class.java)
             return saved.list
         }
 
         override fun save(list: MutableList<CardCache>) {
             val newItem = CacheListWrapper(list)
-            val string = gson.toJson(newItem)
-            sharedPreferences.edit().putString(KEY, string).apply()
+            val string = serialization.toJson(newItem)
+            stringStorage.save(KEY, string)
         }
 
         companion object {

@@ -2,9 +2,7 @@ package com.github.johnnysc.dayswithoutbadhabits
 
 import android.app.Application
 import com.github.johnnysc.dayswithoutbadhabits.core.ProvideInstance
-import com.github.johnnysc.dayswithoutbadhabits.data.BaseRepository
-import com.github.johnnysc.dayswithoutbadhabits.data.CacheDataSource
-import com.github.johnnysc.dayswithoutbadhabits.data.Now
+import com.github.johnnysc.dayswithoutbadhabits.data.*
 import com.github.johnnysc.dayswithoutbadhabits.domain.MainInteractor
 import com.github.johnnysc.dayswithoutbadhabits.presentation.MainCommunication
 import com.github.johnnysc.dayswithoutbadhabits.presentation.MainViewModel
@@ -25,8 +23,8 @@ class App : Application(), ProvideViewModel {
             MainInteractor.Base(
                 BaseRepository(
                     CacheDataSource.Base(
-                        provideInstance.sharedPref().make(this),
-                        Gson()
+                        StringStorage.Base(provideInstance.sharedPref().make(this)),
+                        Serialization.Base(Gson())
                     ),
                     Now.Base(),
                 ),

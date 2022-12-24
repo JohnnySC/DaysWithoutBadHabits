@@ -1,9 +1,7 @@
 package com.github.johnnysc.dayswithoutbadhabits
 
 import android.content.SharedPreferences
-import com.github.johnnysc.dayswithoutbadhabits.data.CacheDataSource
-import com.github.johnnysc.dayswithoutbadhabits.data.CardCache
-import com.github.johnnysc.dayswithoutbadhabits.data.Now
+import com.github.johnnysc.dayswithoutbadhabits.data.*
 import com.google.gson.Gson
 import org.junit.Test
 
@@ -14,7 +12,7 @@ class DeleteNonZeroDaysCardWhenAddCardPresentTest : AbstractUiTest() {
 
     override fun init(sharedPref: SharedPreferences) {
         val now = Now.Base()
-        CacheDataSource.Base(sharedPref, Gson())
+        CacheDataSource.Base(StringStorage.Base(sharedPref), Serialization.Base(Gson()))
             .save(
                 mutableListOf(
                     CardCache(
