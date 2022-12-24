@@ -2,11 +2,11 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/zeroDaysCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margin"
-    android:id="@+id/zeroDaysCardView"
-    app:cardBackgroundColor="@color/teal_200"
+    app:cardBackgroundColor="@color/zero_days_color"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
     <LinearLayout

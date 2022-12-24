@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/card_margin"
-    app:cardBackgroundColor="@color/teal_200"
+    app:cardBackgroundColor="@color/zero_days_color"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
     <LinearLayout
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/card_margin"
             android:layout_marginTop="@dimen/card_inner_margin"
-            android:background="@color/white"
+            android:background="@color/input_background"
             android:hint="@string/hint"
             android:minHeight="@dimen/card_inner_margin" />
 
@@ -46,15 +46,15 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:contentDescription="@string/left"
-                android:layout_margin="@dimen/card_margin"
                 android:id="@+id/upButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/card_margin"
                 android:background="?selectableItemBackground"
+                android:contentDescription="@string/left"
                 android:src="@drawable/ic_arrow_left_24"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <ImageButton
                 android:id="@+id/downButton"
@@ -62,9 +62,9 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
                 android:background="?selectableItemBackground"
+                android:contentDescription="@string/right"
                 android:src="@drawable/ic_arrow_right_24"
-                android:visibility="visible"
-                android:contentDescription="@string/right" />
+                android:visibility="visible" />
 
             <Button
                 android:id="@+id/zeroDaysEditCancelButton"

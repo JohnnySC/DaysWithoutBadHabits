@@ -3,6 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_arrow_up_24.xml" value="0.162" />
+        <entry key="app/src/main/res/drawable/ic_arrow_down_24.xml" value="0.1555" />
+        <entry key="app/src/main/res/drawable/ic_arrow_down_48.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/ic_arrow_left_24.xml" value="0.162" />
+        <entry key="app/src/main/res/drawable/ic_arrow_right_24.xml" value="0.162" />
+        <entry key="app/src/main/res/drawable/ic_arrow_up_24.xml" value="0.1555" />
+        <entry key="app/src/main/res/layout-land/activity_main.xml" value="0.335" />
+        <entry key="app/src/main/res/layout-land/add_button_view.xml" value="0.25" />
+        <entry key="app/src/main/res/layout-land/make_card_view.xml" value="0.25513196480938416" />
+        <entry key="app/src/main/res/layout-land/non_zero_days_card_view.xml" value="0.46822916666666664" />
+        <entry key="app/src/main/res/layout-land/non_zero_days_edit_card_view.xml" value="0.1" />
+        <entry key="app/src/main/res/layout-land/zero_days_card_view.xml" value="0.375" />
+        <entry key="app/src/main/res/layout-land/zero_days_edit_card_view.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_new_main.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/add_button_view.xml" value="0.28125" />

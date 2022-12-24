@@ -8,13 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="statusbar_color">#972D07</color>
-    <color name="input">#972D07</color>
-    <color name="buttons">#972D07</color>
+    <color name="statusbar_color">#FF000000</color>
+    <color name="input">#f7dad9</color>
+    <color name="buttons">#f7dad9</color>
 
-    <color name="add_card_color">#FFE458</color>
-    <color name="zero_days_color">#FFB20F</color>
-    <color name="non_zero_days_color">#FF4B3E</color>
-    <color name="input_background">#FFFFFF</color>
+    <color name="add_card_color">#а5907е</color>
+    <color name="zero_days_color">#786452</color>
+    <color name="non_zero_days_color">#443730</color>
+    <color name="input_background">#191919</color>
 
 </resources>
