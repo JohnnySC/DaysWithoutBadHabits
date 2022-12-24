@@ -12,4 +12,8 @@
     <string name="confirm_delete_card">confirm delete card</string>
     <string name="reset_card">reset days</string>
     <string name="confirm_reset_days">confirm reset days</string>
+    <string name="up">move up</string>
+    <string name="down">move down</string>
+    <string name="left">move left</string>
+    <string name="right">move right</string>
 </resources>
