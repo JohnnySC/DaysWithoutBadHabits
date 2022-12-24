@@ -1,5 +1,7 @@
 package com.github.johnnysc.dayswithoutbadhabits.presentation
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.github.johnnysc.dayswithoutbadhabits.domain.Card
@@ -594,6 +596,15 @@ class MainViewModelTest {
         viewModel.moveCardDown(0)
         assertEquals(0, interactor.cardMovedDownPosition)
     }
+
+    @Test
+    fun `test communication observe`() {
+        val communication = FakeCommunication()
+        val interactor = FakeInteractor(listOf(Card.Add))
+        val viewModel = MainViewModel(communication, interactor)
+        viewModel.observe(FakeLifecycleOwner()) {}
+        assertEquals(true, communication.observeCalled)
+    }
 }
 
 private class FakeInteractor(private val cards: List<Card>) : MainInteractor {
@@ -650,5 +661,24 @@ private class FakeCommunication : MainCommunication.Mutable {
         list.add(value)
     }
 
-    override fun observe(owner: LifecycleOwner, observer: Observer<MainUiState>) = Unit
+    var observeCalled = false
+    override fun observe(owner: LifecycleOwner, observer: Observer<MainUiState>) {
+        observeCalled = true
+    }
+}
+
+private class FakeLifecycleOwner : LifecycleOwner {
+    override fun getLifecycle() = object : Lifecycle() {
+        private val set = mutableSetOf<LifecycleObserver>()
+
+        override fun addObserver(observer: LifecycleObserver) {
+            set.add(observer)
+        }
+
+        override fun removeObserver(observer: LifecycleObserver) {
+            set.remove(observer)
+        }
+
+        override fun getCurrentState() = State.CREATED
+    }
 }
