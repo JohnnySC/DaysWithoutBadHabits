@@ -31,4 +31,31 @@ class CardMapperTest : BaseTest() {
         val expected = Card.NonZeroDays(4, "y", 12L)
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `test same`() {
+        val card = CardCache(1L, 12L, "text")
+        var actual = card.map(CardMapper.Same(1L))
+        var expected = true
+        assertEquals(expected, actual)
+        actual = card.map(CardMapper.Same(2L))
+        expected = false
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `test update text`() {
+        val card = CardCache(1L, 12L, "first")
+        val actual = card.map(CardMapper.UpdateText("new text"))
+        val expected = CardCache(1L, 12L, "new text")
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `test update time`() {
+        val card = CardCache(1L, 12L, "first")
+        val actual = card.map(CardMapper.UpdateTime(54))
+        val expected = CardCache(1L, 54, "first")
+        assertEquals(expected, actual)
+    }
 }

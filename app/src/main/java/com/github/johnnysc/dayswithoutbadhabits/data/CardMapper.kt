@@ -23,4 +23,19 @@ interface CardMapper<T> {
                 Card.ZeroDays(text, id)
         }
     }
+
+    class Same(private val id: Long) : CardMapper<Boolean> {
+        override fun map(id: Long, countStartTime: Long, text: String) =
+            this.id == id
+    }
+
+    class UpdateText(private val newText: String) : CardMapper<CardCache> {
+        override fun map(id: Long, countStartTime: Long, text: String) =
+            CardCache(id, countStartTime, newText)
+    }
+
+    class UpdateTime(private val newCountStartTime: Long) : CardMapper<CardCache> {
+        override fun map(id: Long, countStartTime: Long, text: String) =
+            CardCache(id, newCountStartTime, text)
+    }
 }
