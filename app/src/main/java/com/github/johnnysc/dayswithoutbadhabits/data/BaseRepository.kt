@@ -27,25 +27,25 @@ class BaseRepository(
 
     override fun updateCard(id: Long, newText: String) {
         val mutableList = cacheDataSource.read()
-        val card = mutableList.find { it.same(id) }!!
+        val card = mutableList.find { it.map(CardMapper.Same(id)) }!!
         val index = mutableList.indexOf(card)
-        val newCard = card.updateText(newText)
+        val newCard = card.map(CardMapper.UpdateText(newText))
         mutableList[index] = newCard
         cacheDataSource.save(mutableList)
     }
 
     override fun deleteCard(id: Long) {
         val cachedCards = cacheDataSource.read()
-        val card = cachedCards.find { it.same(id) }!!
+        val card = cachedCards.find { it.map(CardMapper.Same(id)) }!!
         cachedCards.remove(card)
         cacheDataSource.save(cachedCards)
     }
 
     override fun resetCard(id: Long) {
         val mutableList = cacheDataSource.read()
-        val card = mutableList.find { it.same(id) }!!
+        val card = mutableList.find { it.map(CardMapper.Same(id)) }!!
         val index = mutableList.indexOf(card)
-        val newCard = card.updateCountStartTime(now.time())
+        val newCard = card.map(CardMapper.UpdateTime(now.time()))
         mutableList[index] = newCard
         cacheDataSource.save(mutableList)
     }
