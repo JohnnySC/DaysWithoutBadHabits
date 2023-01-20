@@ -11,10 +11,10 @@ interface Card : Serializable {
     fun <T> make(makeUi: MakeUi<T>): T
 
     abstract class Abstract(
-        private val id: Long,
-        private val text: String,
-        private val days: Int,
-        private val editable: Boolean
+        protected open val id: Long,
+        protected open val text: String,
+        protected open val days: Int,
+        protected open val editable: Boolean
     ) : Card {
 
         fun <T> map(mapper: Mapper<T>): T = mapper.map(id, text, days, editable)
@@ -63,22 +63,32 @@ interface Card : Serializable {
         override fun <T> make(makeUi: MakeUi<T>): T = makeUi.makeCard(this)
     }
 
-    data class ZeroDays(val text: String, val id: Long) : Abstract(id, text, 0, false) {
+    data class ZeroDays(
+        override val text: String, override val id: Long
+    ) : Abstract(id, text, 0, false) {
         override fun <T> make(makeUi: MakeUi<T>): T = makeUi.zeroDays(text, this)
     }
 
-    data class ZeroDaysEdit(val text: String, val id: Long) : Abstract(id, text, 0, true) {
+    data class ZeroDaysEdit(
+        override val text: String, override val id: Long
+    ) : Abstract(id, text, 0, true) {
         override fun <T> make(makeUi: MakeUi<T>): T = makeUi.editableZeroDays(id, text, this)
     }
 
-    data class NonZeroDays(val days: Int, val text: String, val id: Long) :
-        Abstract(id, text, days, false) {
+    data class NonZeroDays(
+        override val days: Int,
+        override val text: String,
+        override val id: Long
+    ) : Abstract(id, text, days, false) {
 
         override fun <T> make(makeUi: MakeUi<T>): T = makeUi.nonZeroDays(days, text, this)
     }
 
-    data class NonZeroDaysEdit(val days: Int, val text: String, val id: Long) :
-        Abstract(id, text, days, true) {
+    data class NonZeroDaysEdit(
+        override val days: Int,
+        override val text: String,
+        override val id: Long
+    ) : Abstract(id, text, days, true) {
 
         override fun <T> make(makeUi: MakeUi<T>): T =
             makeUi.editableNonZeroDays(id, days, text, this)
