@@ -12,6 +12,9 @@
 #   public *;
 #}
 
+-keep class com.github.johnnysc.dayswithoutbadhabits.data.CardCache { *;}
+
+-keep class com.github.johnnysc.dayswithoutbadhabits.data.CacheDataSource$CacheListWrapper {*;}
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable
