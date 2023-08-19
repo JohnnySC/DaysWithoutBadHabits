@@ -115,7 +115,7 @@ abstract class AbstractCardView : FrameLayout, CardUi {
         }
         anim.duration = ANIMATION_DURATION
         anim.addListener(object : SimpleAnimator() {
-            override fun onAnimationEnd(animation: Animator?) = action.invoke()
+            override fun onAnimationEnd(animation: Animator) = action.invoke()
         })
         anim.start()
     }
@@ -126,7 +126,7 @@ abstract class AbstractCardView : FrameLayout, CardUi {
             duration = ANIMATION_DURATION
             alpha(0f)
             setListener(object : SimpleAnimator() {
-                override fun onAnimationEnd(animation: Animator?) = action.invoke()
+                override fun onAnimationEnd(animation: Animator) = action.invoke()
             })
             start()
         }
