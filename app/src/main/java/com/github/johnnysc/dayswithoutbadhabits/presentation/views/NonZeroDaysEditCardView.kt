@@ -1,7 +1,6 @@
 package com.github.johnnysc.dayswithoutbadhabits.presentation.views
 
 import android.content.Context
-import android.text.Editable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
@@ -26,8 +25,14 @@ class NonZeroDaysEditCardView : AbstractCardView.AbleToMove.Editable {
         defStyleAttr
     )
 
-    private var deletePressed = false
-    private var resetPressed = false
+    private var innerState: UiState = UiState.Initial
+
+    private val changeState = object : ChangeUiState {
+        override fun update(uiState: UiState) {
+            innerState = uiState
+        }
+    }
+
     private lateinit var input: TextInputEditText
     private lateinit var deleteButton: Button
     private lateinit var resetButton: Button
@@ -59,28 +64,18 @@ class NonZeroDaysEditCardView : AbstractCardView.AbleToMove.Editable {
         input.setText(text)
 
         deleteButton.setOnClickListener {
-            if (deletePressed)
+            innerState.delete(deleteButton, resetButton, saveButton, changeState) {
                 closeAnimation {
                     actions.deleteCard(positionCallback.position(this), id)
                 }
-            else {
-                saveButton.visibility = View.GONE
-                resetButton.visibility = View.GONE
-                deleteButton.setText(R.string.confirm_delete_card)
-                deletePressed = true
             }
         }
 
         resetButton.setOnClickListener {
-            if (resetPressed)
+            innerState.reset(deleteButton, resetButton, saveButton, changeState) {
                 hideAnimation {
                     actions.resetNonZeroDaysCard(positionCallback.position(this), card)
                 }
-            else {
-                resetPressed = true
-                resetButton.setText(R.string.confirm_reset_days)
-                deleteButton.visibility = View.GONE
-                saveButton.visibility = View.GONE
             }
         }
 
@@ -93,40 +88,156 @@ class NonZeroDaysEditCardView : AbstractCardView.AbleToMove.Editable {
         }
 
         cancelButton.setOnClickListener {
-            if (deletePressed) {
-                deletePressed = false
-                deleteButton.setText(R.string.delete_card)
-                saveButton.visibility = View.VISIBLE
-                resetButton.visibility = View.VISIBLE
-            } else if (resetPressed) {
-                resetPressed = false
-                resetButton.setText(R.string.reset_card)
-                saveButton.visibility = View.VISIBLE
-                deleteButton.visibility = View.VISIBLE
-            } else
+            innerState.cancel(deleteButton, resetButton, saveButton, changeState) {
                 hideAnimation {
                     actions.cancelEditNonZeroDaysCard(positionCallback.position(this), card)
                 }
+            }
         }
         animateStart()
     }
 
     override fun save(): SaveAndRestoreCard {
         input.removeTextChangedListener(textWatcher)
-        return SaveAndRestoreCard(card, listOf(deletePressed, resetPressed, input.text.toString()))
+        return SaveAndRestoreCard(card, listOf(innerState, input.text.toString()))
     }
 
     override fun restore(extras: List<Serializable>) {
         super.restore(extras)
-        this.deletePressed = extras[0] as Boolean
-        this.resetPressed = extras[1] as Boolean
-        input.setText(extras[2] as String)
+        innerState = extras[0] as UiState
+        input.setText(extras[1] as String)
+        innerState.restore(deleteButton, resetButton, saveButton)
+    }
+}
 
-        if (deletePressed) {
+private interface ChangeUiState {
+
+    fun update(uiState: UiState)
+}
+
+private interface UiState : Serializable {
+
+    fun delete(
+        deleteButton: Button,
+        resetButton: Button,
+        saveButton: Button,
+        changeUiState: ChangeUiState,
+        close: () -> Unit
+    ) = Unit
+
+    fun reset(
+        deleteButton: Button,
+        resetButton: Button,
+        saveButton: Button,
+        changeUiState: ChangeUiState,
+        close: () -> Unit
+    ) = Unit
+
+    fun cancel(
+        deleteButton: Button,
+        resetButton: Button,
+        saveButton: Button,
+        changeUiState: ChangeUiState,
+        close: () -> Unit
+    )
+
+    fun restore(
+        deleteButton: Button,
+        resetButton: Button,
+        saveButton: Button
+    ) = Unit
+
+    object Initial : UiState {
+
+        override fun delete(
+            deleteButton: Button,
+            resetButton: Button,
+            saveButton: Button,
+            changeUiState: ChangeUiState,
+            close: () -> Unit
+        ) {
             saveButton.visibility = View.GONE
             resetButton.visibility = View.GONE
             deleteButton.setText(R.string.confirm_delete_card)
-        } else if (resetPressed) {
+            changeUiState.update(ConfirmDelete)
+        }
+
+        override fun reset(
+            deleteButton: Button,
+            resetButton: Button,
+            saveButton: Button,
+            changeUiState: ChangeUiState,
+            close: () -> Unit
+        ) {
+            resetButton.setText(R.string.confirm_reset_days)
+            deleteButton.visibility = View.GONE
+            saveButton.visibility = View.GONE
+            changeUiState.update(ConfirmReset)
+        }
+
+        override fun cancel(
+            deleteButton: Button,
+            resetButton: Button,
+            saveButton: Button,
+            changeUiState: ChangeUiState,
+            close: () -> Unit
+        ) = close.invoke()
+    }
+
+    object ConfirmDelete : UiState {
+
+        override fun delete(
+            deleteButton: Button,
+            resetButton: Button,
+            saveButton: Button,
+            changeUiState: ChangeUiState,
+            close: () -> Unit
+        ) = close.invoke()
+
+        override fun cancel(
+            deleteButton: Button,
+            resetButton: Button,
+            saveButton: Button,
+            changeUiState: ChangeUiState,
+            close: () -> Unit
+        ) {
+            deleteButton.setText(R.string.delete_card)
+            saveButton.visibility = View.VISIBLE
+            resetButton.visibility = View.VISIBLE
+            changeUiState.update(Initial)
+        }
+
+        override fun restore(deleteButton: Button, resetButton: Button, saveButton: Button) {
+            saveButton.visibility = View.GONE
+            resetButton.visibility = View.GONE
+            deleteButton.setText(R.string.confirm_delete_card)
+        }
+    }
+
+    object ConfirmReset : UiState {
+
+        override fun reset(
+            deleteButton: Button,
+            resetButton: Button,
+            saveButton: Button,
+            changeUiState: ChangeUiState,
+            close: () -> Unit
+        ) = close.invoke()
+
+        override fun cancel(
+            deleteButton: Button,
+            resetButton: Button,
+            saveButton: Button,
+            changeUiState: ChangeUiState,
+            close: () -> Unit
+        ) {
+            resetButton.setText(R.string.reset_card)
+            saveButton.visibility = View.VISIBLE
+            deleteButton.visibility = View.VISIBLE
+            changeUiState.update(Initial)
+        }
+
+        override fun restore(deleteButton: Button, resetButton: Button, saveButton: Button) {
             resetButton.setText(R.string.confirm_reset_days)
             deleteButton.visibility = View.GONE
             saveButton.visibility = View.GONE

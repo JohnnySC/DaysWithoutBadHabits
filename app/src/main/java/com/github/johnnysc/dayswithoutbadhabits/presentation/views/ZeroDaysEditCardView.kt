@@ -1,7 +1,6 @@
 package com.github.johnnysc.dayswithoutbadhabits.presentation.views
 
 import android.content.Context
-import android.text.Editable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
@@ -25,7 +24,14 @@ class ZeroDaysEditCardView : AbstractCardView.AbleToMove.Editable {
         defStyleAttr
     )
 
-    private var deletePressed = false
+    private var innerState: State = State.Initial
+
+    private val changeState = object : ChangeState {
+        override fun update(state: State) {
+            innerState = state
+        }
+    }
+
     private lateinit var card: Card
     private lateinit var input: TextInputEditText
     private lateinit var saveButton: Button
@@ -53,14 +59,10 @@ class ZeroDaysEditCardView : AbstractCardView.AbleToMove.Editable {
         input.setText(text)
 
         deleteButton.setOnClickListener {
-            if (deletePressed)
+            innerState.delete(saveButton, deleteButton, changeState) {
                 closeAnimation {
                     actions.deleteCard(positionCallback.position(this@ZeroDaysEditCardView), id)
                 }
-            else {
-                saveButton.visibility = View.GONE
-                deleteButton.setText(R.string.confirm_delete_card)
-                deletePressed = true
             }
         }
 
@@ -75,30 +77,85 @@ class ZeroDaysEditCardView : AbstractCardView.AbleToMove.Editable {
         }
 
         cancelButton.setOnClickListener {
-            if (deletePressed) {
-                deletePressed = false
-                deleteButton.setText(R.string.delete_card)
-                saveButton.visibility = View.VISIBLE
-            } else
+            innerState.cancel(saveButton, deleteButton, changeState) {
                 hideAnimation {
                     actions.cancelEditZeroDaysCard(positionCallback.position(this), card)
                 }
+            }
         }
         animateStart()
     }
 
     override fun save(): SaveAndRestoreCard {
         input.removeTextChangedListener(textChangeListener)
-        return SaveAndRestoreCard(card, listOf(deletePressed, input.text.toString()))
+        return SaveAndRestoreCard(card, listOf(innerState, input.text.toString()))
     }
 
     override fun restore(extras: List<Serializable>) {
         super.restore(extras)
-        deletePressed = extras[0] as Boolean
+        innerState = extras[0] as State
         input.setText(extras[1] as String)
-        if (deletePressed) {
+        innerState.restore(saveButton, deleteButton)
+    }
+}
+
+private interface State : Serializable {
+
+    fun restore(saveButton: View, deleteButton: Button) = Unit
+
+    fun cancel(saveButton: View, deleteButton: Button, changeState: ChangeState, close: () -> Unit)
+
+    fun delete(saveButton: View, deleteButton: Button, changeState: ChangeState, close: () -> Unit)
+
+    object Initial : State {
+
+        override fun cancel(
+            saveButton: View,
+            deleteButton: Button,
+            changeState: ChangeState,
+            close: () -> Unit
+        ) = close.invoke()
+
+        override fun delete(
+            saveButton: View,
+            deleteButton: Button,
+            changeState: ChangeState,
+            close: () -> Unit
+        ) {
+            saveButton.visibility = View.GONE
+            deleteButton.setText(R.string.confirm_delete_card)
+            changeState.update(ConfirmDelete)
+        }
+    }
+
+    object ConfirmDelete : State {
+
+        override fun cancel(
+            saveButton: View,
+            deleteButton: Button,
+            changeState: ChangeState,
+            close: () -> Unit
+        ) {
+            deleteButton.setText(R.string.delete_card)
+            saveButton.visibility = View.VISIBLE
+            changeState.update(Initial)
+        }
+
+        override fun delete(
+            saveButton: View,
+            deleteButton: Button,
+            changeState: ChangeState,
+            close: () -> Unit
+        ) = close.invoke()
+
+        override fun restore(saveButton: View, deleteButton: Button) {
             saveButton.visibility = View.GONE
             deleteButton.setText(R.string.confirm_delete_card)
         }
     }
+}
+
+private interface ChangeState {
+
+    fun update(state: State)
 }
